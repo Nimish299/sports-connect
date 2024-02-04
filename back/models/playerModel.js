@@ -9,17 +9,7 @@ const playerSchema=new mongoose.Schema({
     password :{
       type: String,
       required: true
-    },
-    cart:[
-      {
-        name:{
-          type:String
-        },
-        quantity:{
-          type:Number
-        }
-      }
-    ]
+    }
 
 },{Timestamps:true})
 

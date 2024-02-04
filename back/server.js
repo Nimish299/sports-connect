@@ -4,7 +4,7 @@ const mongoose=require('mongoose')
 const cookieParser=require('cookie-parser')
 
 const playerRoute=require ('./routes/PlayerRoute')
-
+const coachRoute= require('./routes/CoachRoute')
 
 const app=express()
 
@@ -18,6 +18,7 @@ app.use((req,res,next)=>{
 })
 
 app.use('/api/player',playerRoute)
+app.use('/api/coach',coachRoute)
 
 mongoose.connect(process.env.DB_URI)
   .then(()=>{
