@@ -12,12 +12,13 @@ import CoachHome from './pages/coach/CoachHome';
 import AcademyDetailsPage from './pages/academy/AcademyDetailsPage';
 import PlayerCoach from './pages/player/PlayerCoach';
 import PlayerPlayer from './pages/player/PlayerPlayer';
+import AppliedAcademys from './pages/player/AppliedAcademys';
 
 
 function App() {
   return (
     <div>
-      <h3>navbar here right side it gives login option if already logged in display ur username can use net ninjas for reference</h3>
+      <h3>navbar here right side it gives login option if already logged in display ur username</h3>
       <BrowserRouter>
         <div>
           <Routes>
@@ -26,6 +27,7 @@ function App() {
             <Route path='/player/signup' element={<PlayerSignup/>}/>
             <Route path='/player/home' element={<PlayerHome/>}/>
             <Route path ='/player/playercoach' element={<PlayerCoach/>}/>
+            <Route path ='/player/applied' element={<AppliedAcademys/>}/> 
             <Route path ='/player/playerplayer' element={<PlayerPlayer/>}/>
 
             <Route path='/academy/:name' element={<AcademyDetailsPage/>}/>

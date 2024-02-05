@@ -9,7 +9,22 @@ const playerSchema=new mongoose.Schema({
     password :{
       type: String,
       required: true
-    }
+    },
+    applied:[
+      {
+        name:{
+          type:String,
+        },
+      }
+    ],
+    // starred:[
+    //   {
+    //     name:{
+    //       type:string
+    //     }
+    //   }
+    // ]
+
 
 },{Timestamps:true})
 

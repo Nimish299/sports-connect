@@ -1,4 +1,5 @@
 const playerModel =require('../models/playerModel');
+const academyModel=require('../models/academyModel')
 const mongoose=require('mongoose');
 const jwt=require('jsonwebtoken')
 
@@ -55,9 +56,74 @@ const logout= async(req,res)=>{
   return res.status(200).json('')
 }
 
+const applytoacad= async(req,res)=>{
+  const player=await playerModel.findOne({_id:req.playerid});
+  if(!player){
+    return res.status(400).json({error:"no such player"});
+  }
+
+  const {name}=req.body;
+  const nameobj={name}
+  const acad=await academyModel.findOne({name})
+  if(!acad){
+    return res.status(400).json({error:"no such academy"});
+  }
+  const tryfind=await playerModel.findOne(
+    {_id:req.playerid,'applied.name':name}
+  )
+  if(tryfind){
+    return res.status(400).json({error:'already applied'});
+  }
+  if(acad.quantity<1){
+    return res.status(400).json({error:'no place available right now '});
+  }
+  const newquant=acad.quantity-1
+  await academyModel.findOneAndUpdate({name},{$set:{quantity:newquant}});
+
+  
+
+
+
+  const tryupdate=await playerModel.findOneAndUpdate(
+    {_id:req.playerid},{$push:{applied:nameobj}}
+  )
+
+  console.log("here");
+  return res.status(200).json({tryupdate})
+
+}
+
+const applied=async(req,res)=>{
+  const player= await playerModel.findOne({_id:req.playerid})
+  console.log(player);
+  return res.status(200).json({player})
+}
+
+const leaveacad=async(req,res)=>{
+  console.log(req.body);
+  const {name} = req.body;
+  await academyModel.findOneAndUpdate({name},{$inc:{'quantity':1}});
+  
+  console.log(name);
+  console.log(req.playerid);
+  
+  const retval= await playerModel.findOneAndUpdate(
+    {_id:req.playerid},
+    {$pull:{'applied':{name}}}
+  )
+
+  return res.status(200).json({retval});
+  
+
+}
+
+
 
 module.exports={
   signup,
   login,
   logout,
+  applied,
+  applytoacad,
+  leaveacad
 }

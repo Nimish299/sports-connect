@@ -52,12 +52,17 @@ const PlayerCoach = () => {
 		run();
 		setFilterinUse(false);
 	}
-
+	const redirecttoapplied=()=>{
+		return navigate('/player/applied')
+	}
 
 	return (
 		<div>
 			<div>
 				<button onClick={gotoPlayerHome}>back</button>
+			</div>
+			<div>
+				<button onClick={redirecttoapplied}>go to applied academys</button>
 			</div>
 
 			<div>
