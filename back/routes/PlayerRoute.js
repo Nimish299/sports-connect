@@ -11,7 +11,10 @@ const {
   logout,
   applied,
   applytoacad,
-  leaveacad
+  leaveacad,
+  addtostarred,
+  starred,
+  removefromstarred
 } =require('../controllers/playerController')
 
 router.post('/signup',signup)
@@ -19,10 +22,14 @@ router.post('/login',login)
 router.get('/logout',logout)
 
 
-router.use(['/applytoacad','/applied','/leaveacad'],playermiddle)
+router.use(['/applytoacad','/applied','/leaveacad','/addtostarred','/starred','/removefromstarred'],playermiddle)
 router.post('/applytoacad',applytoacad)
 router.get('/applied',applied)
 router.delete('/leaveacad',leaveacad)
+
+router.post('/addtostarred',addtostarred)
+router.get('/starred',starred)
+router.delete('/removefromstarred',removefromstarred)
 
 
 module.exports = router

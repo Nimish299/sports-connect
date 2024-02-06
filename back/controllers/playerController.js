@@ -1,5 +1,6 @@
 const playerModel =require('../models/playerModel');
 const academyModel=require('../models/academyModel')
+const playerPostModel = require('../models/playerPostModel')
 const mongoose=require('mongoose');
 const jwt=require('jsonwebtoken')
 
@@ -119,11 +120,77 @@ const leaveacad=async(req,res)=>{
 
 
 
+
+
+
+const addtostarred= async(req,res)=>{
+  const player=await playerModel.findOne({_id:req.playerid});
+  if(!player){
+    return res.status(400).json({error:"no such player"});
+  }
+
+  const {name}=req.body;
+  const nameobj={name}
+  const post=await playerPostModel.findOne({name})
+  if(!post){
+    return res.status(400).json({error:"no such playerPost here"});
+  }
+  const tryfind=await playerModel.findOne(
+    {_id:req.playerid,'starred.name':name}
+  )
+  if(tryfind){
+    return res.status(400).json({error:'already starred'});
+  }
+  // if(post.quantity<1){
+  //   return res.status(400).json({error:'no place available right now '});
+  // }
+  //const newquant=post.quantity-1
+  //await playerPostModel.findOneAndUpdate({name},{$set:{quantity:newquant}});
+
+  const tryupdate=await playerModel.findOneAndUpdate(
+    {_id:req.playerid},{$push:{starred:nameobj}}
+  )
+
+  console.log("here");
+  return res.status(200).json({tryupdate})
+
+}
+
+const starred=async(req,res)=>{
+  const player= await playerModel.findOne({_id:req.playerid})
+
+  console.log(player);
+  return res.status(200).json({player})
+}
+
+const removefromstarred=async(req,res)=>{
+  console.log(req.body);
+  const {name} = req.body;
+  await playerPostModel.findOneAndUpdate({name},{$inc:{'quantity':1}});
+  
+  console.log(name);
+  console.log(req.playerid);
+  
+  const retval= await playerModel.findOneAndUpdate(
+    {_id:req.playerid},
+    {$pull:{'starred':{name}}}
+  )
+
+  return res.status(200).json({retval});
+  
+
+}
+
+
+
 module.exports={
   signup,
   login,
   logout,
   applied,
   applytoacad,
-  leaveacad
+  leaveacad,
+  addtostarred,
+  starred,
+  removefromstarred
 }

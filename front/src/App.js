@@ -13,6 +13,9 @@ import AcademyDetailsPage from './pages/academy/AcademyDetailsPage';
 import PlayerCoach from './pages/player/PlayerCoach';
 import PlayerPlayer from './pages/player/PlayerPlayer';
 import AppliedAcademys from './pages/player/AppliedAcademys';
+import StarredPosts from './pages/player/StarredPosts';
+import PlayerPostDetailsPage from './pages/playerPost/PlayerPostDetailsPage';
+import MyPosts from './pages/player/MyPosts';
 
 
 function App() {
@@ -29,6 +32,10 @@ function App() {
             <Route path ='/player/playercoach' element={<PlayerCoach/>}/>
             <Route path ='/player/applied' element={<AppliedAcademys/>}/> 
             <Route path ='/player/playerplayer' element={<PlayerPlayer/>}/>
+            <Route path ='/player/myposts' element={<MyPosts/>}/>
+
+            <Route path ='/player/starred' element ={<StarredPosts/>}/>
+            <Route path='/playerpost/:name' element={<PlayerPostDetailsPage/>}/>
 
             <Route path='/academy/:name' element={<AcademyDetailsPage/>}/>
 

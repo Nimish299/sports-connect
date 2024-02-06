@@ -17,13 +17,13 @@ const playerSchema=new mongoose.Schema({
         },
       }
     ],
-    // starred:[
-    //   {
-    //     name:{
-    //       type:string
-    //     }
-    //   }
-    // ]
+    starred:[
+      {
+        name:{
+          type:String
+        }
+      }
+    ]
 
 
 },{Timestamps:true})
