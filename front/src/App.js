@@ -16,12 +16,15 @@ import AppliedAcademys from './pages/player/AppliedAcademys';
 import StarredPosts from './pages/player/StarredPosts';
 import PlayerPostDetailsPage from './pages/playerPost/PlayerPostDetailsPage';
 import MyPosts from './pages/player/MyPosts';
+import Navbar from './pages/Navbar';
 
 
 function App() {
   return (
     <div>
       <h3>navbar here right side it gives login option if already logged in display ur username</h3>
+      <Navbar/>
+
       <BrowserRouter>
         <div>
           <Routes>
