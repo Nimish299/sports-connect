@@ -38,8 +38,22 @@ const PlayerSignup = () => {
 
   return (
     <>
-      <div className= "h-100 d-flex align-items-center justify-content-center">
+    <div  style={{
+      fontWeight: 'bold',
+      color: 'black', 
+      textAlign: 'center', 
+       
+    }} className="h-100 container  d-flex align-items-center justify-content-center">
+      <h2>Player Sign up</h2>
+      </div>
+    
+
+      <div style={{width:"350px"}} className= "h-100 container  d-flex align-items-center justify-content-center border my-2">
         <form onSubmit={LoginFormSubmit}>
+          <div>
+            
+          </div>
+          
 
             <div className="mb-3">
             <label  className="form-label">

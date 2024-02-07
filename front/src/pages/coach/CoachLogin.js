@@ -29,8 +29,17 @@ const CoachLogin = () => {
   };
 
   return (
+    
     <>
-      <div className="h-100 d-flex align-items-center justify-content-center">
+     <div  style={{
+      fontWeight: 'bold',
+      color: 'black', 
+      textAlign: 'center', 
+       
+    }} className="h-100 container  d-flex align-items-center justify-content-center my-2">
+      <h2>Coach Sign In</h2>
+      </div>
+      <div style={{width:"350px"}} className= "h-100 container  d-flex align-items-center justify-content-center border my-2">
         <form className="loginForm" onSubmit={LoginFormSubmit}>
           <div className="mb-3">
             <label for="exampleInputEmail1" className="form-label">

@@ -22,7 +22,7 @@ import Navbar from './pages/Navbar';
 function App() {
   return (
     <div>
-      <h3>navbar here right side it gives login option if already logged in display ur username</h3>
+     
       <Navbar/>
 
       <BrowserRouter>
