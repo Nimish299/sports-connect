@@ -1,5 +1,5 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { NavLink, useNavigate,Link  } from "react-router-dom";
+import { useState, } from "react";
 
 const PlayerLogin = () => {
   const [emailID, setEmailID] = useState("");
@@ -29,53 +29,53 @@ const PlayerLogin = () => {
   };
 
   return (
-    
-      <div>
-        <form className="loginForm" onSubmit={LoginFormSubmit}>
-          <div className="mb-3">
-            <label for="exampleInputEmail1" className="form-label">
-              Email address
-            </label>
-            <input
-              value={emailID}
-              onChange={(e) => setEmailID(e.target.value)}
-              type="email"
-              className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-            />
-            <div id="emailHelp" className="form-text">
-              We'll never share your email with anyone else.
-            </div>
+    <>
+    <span className="border"> 
+    <div className= "h-100 d-flex align-items-center justify-content-center">
+      <form className="loginForm" onSubmit={LoginFormSubmit}>
+        <div className="mb-3">
+          <label for="exampleInputEmail1" className="form-label">
+            Email address
+          </label>
+          <input
+            value={emailID}
+            onChange={(e) => setEmailID(e.target.value)}
+            type="email"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+          />
+          <div id="emailHelp" className="form-text">
+            We'll never share your email with anyone else.
           </div>
-          <div className="mb-3">
-            <label for="exampleInputPassword1" className="form-label">
-              Password
-            </label>
-            <input
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
-
-        <div>{errDisplay && <p>{errDisplay}</p>}</div>
-        <div>
-          <NavLink to="/">back</NavLink>
         </div>
-      </div>
+        <div className="mb-3">
+          <label for="exampleInputPassword1" className="form-label">
+            Password
+          </label>
+          <input
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            type="password"
+            className="form-control"
+            id="exampleInputPassword1"
+          />
+        </div>
 
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+
+      <div>{errDisplay && <p>{errDisplay}</p>}</div>
       
-    
+    </div>
+    </span>
+   
+    <Link class="btn btn-primary" to="/" role="button">Back</Link>
+    </>
   );
 };
 

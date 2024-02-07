@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 
 const PlayerSignup = () => {
@@ -11,6 +11,7 @@ const PlayerSignup = () => {
   const navigate = useNavigate();
 
   const LoginFormSubmit = async (e) => {
+    if(cpassword==password) {
     e.preventDefault();
     const user = { emailID, password };
     const response = await fetch(`/api/player/signup`, {
@@ -29,11 +30,15 @@ const PlayerSignup = () => {
       console.log(json.error);
       seterrDisplay(json.error);
     }
+  }
+  else {
+    alert("Passwords do not match");
+  }
   };
 
   return (
-    
-      <div>
+    <>
+      <div className= "h-100 d-flex align-items-center justify-content-center">
         <form onSubmit={LoginFormSubmit}>
 
             <div className="mb-3">
@@ -91,7 +96,7 @@ const PlayerSignup = () => {
               type="password"
               className="form-control"
               id="exampleInputPassword1"
-              value={password}
+              value={cpassword}
               onChange={(e) => {
                 setCpassword(e.target.value);
               }}
@@ -105,9 +110,13 @@ const PlayerSignup = () => {
 
         <div>{errDisplay && <p>{errDisplay}</p>}</div>
         <div>
-          <NavLink to="/">back</NavLink>
+          
         </div>
       </div>
+
+<Link class="btn btn-primary" to="/" role="button">Back</Link>
+</>
+
 
       
     
