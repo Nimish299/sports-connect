@@ -94,7 +94,7 @@ const PlayerCoach = () => {
 			</div>
 			<h2>these are the available PlayerPosts</h2>
 
-			<div>
+			<div className="row d-flex">
 				{playerPosts && playerPosts.map((post)=>(
 					<PostListDisplay key={post.name} playerPost={post} navigate={navigate}/>
 				))}

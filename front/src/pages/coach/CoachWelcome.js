@@ -1,22 +1,27 @@
-import { NavLink } from "react-router-dom"
+import { NavLink , Link} from "react-router-dom";
 
-const CoachWelcome=()=> {
+const CoachWelcome = () => {
   return (
     <div>
-      <h1>welcome coach</h1>
+      <h2>
+        Welcome, where passionate coaches connect
+        with eager students to elevate their sports performance to new heights.
+        As a coach on our platform, You can guide and inspire athletes
+        on their journey to success.
+      </h2>
       <div>
         <div>
-          <NavLink to ='/coach/login'>login</NavLink>
+          <NavLink className = "btn btn-primary my-2" to="/coach/login">login</NavLink>
         </div>
         <div>
-          <NavLink to ='/coach/signup'>signup</NavLink>
+          <NavLink className = "btn btn-primary my-2" to="/coach/signup">signup</NavLink>
         </div>
         <div>
-          <NavLink to ='/'>back</NavLink>
+          <NavLink className = "btn btn-primary my-2" to="/">back</NavLink>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CoachWelcome
+export default CoachWelcome;
