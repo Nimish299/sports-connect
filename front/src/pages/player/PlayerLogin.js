@@ -73,7 +73,7 @@ const PlayerLogin = () => {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Submit
+          Sign In
         </button>
       </form>
 
