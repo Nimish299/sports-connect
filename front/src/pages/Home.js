@@ -1,35 +1,99 @@
 import { Link, NavLink } from "react-router-dom";
 
+import backgroundImage from "./backgroundImage.jpg";
+
 const Home = () => {
   return (
-    <div >
-      
-      
-      <h1>welcome</h1>
-        <p>
-          Welcome, your ultimate destination for unlocking your athletic
-          potential! We understand the importance of personalized guidance in
-          sports, and that's why we've created a platform that connects students
-          with experienced coaches across a spectrum of disciplines. Discover
-          the power of one-on-one coaching tailored to your specific needs and
-          goals. Whether you're a beginner looking to master the basics or an
-          advanced athlete aiming for peak performance, our platform is designed
-          to match you with the perfect coach for your chosen sport.
-        </p>
-        <div>
-       
-          <Link class="btn btn-primary my-3 align-items-center justify-content-center" to="/player/login" role="button">Log in</Link>
-        </div>
-        <div>
-          
-          <Link class="btn btn-primary my-3" to="/player/signup" role="button">Sign up</Link>
-        </div>
-        <div>
-          <h3>are you a coach ?? </h3>
-          <NavLink to="/coach">coach home page</NavLink>
+    <div
+      className="newcode"
+      // style={{
+      //   backgroundImage: `url(${backgroundImage})`,
+      //   backgroundSize: "cover", // Ensure the background image covers the entire container
+      //   backgroundPosition: "center", // Center the background image
+      //   minHeight: "100vh",
+      //   display: "flex",
+      //   justifyContent: "center",
+      //   alignItems: "center",
+      // }}
+    >
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            maxHeight: "1000px",
+            maxWidth: "900px",
+            backgroundColor: "#fff",
+            padding: "40px",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "2.5rem",
+              marginBottom: "30px",
+              color: "#333",
+            }}
+          >
+            Welcome to Sports Connect
+          </h1>
+          <p
+            style={{
+              fontSize: "1.2rem",
+              marginBottom: "30px",
+              color: "#666",
+            }}
+          >
+            Ready to take your game to the next level?
+          </p>
+          <NavLink
+            to="/player"
+            style={{
+              display: "inline-block",
+              padding: "15px 40px",
+              fontSize: "1.2rem",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              textDecoration: "none",
+              border: "none",
+              borderRadius: "25px",
+              cursor: "pointer",
+              transition: "background-color 0.3s",
+              margin: "10px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            Player
+          </NavLink>
+
+          <NavLink
+            to="/coach"
+            style={{
+              display: "inline-block",
+              padding: "15px 40px",
+              fontSize: "1.2rem",
+              backgroundColor: "#28a745",
+              color: "#fff",
+              textDecoration: "none",
+              border: "none",
+              borderRadius: "25px",
+              cursor: "pointer",
+              transition: "background-color 0.3s",
+              margin: "10px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            coach
+          </NavLink>
         </div>
       </div>
-   
+    </div>
   );
 };
 
