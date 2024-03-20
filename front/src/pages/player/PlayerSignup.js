@@ -1,3 +1,4 @@
+
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import {
@@ -28,23 +29,31 @@ const PlayerSignup = () => {
         body: JSON.stringify(user),
         headers: {
           "Content-type": "application/json",
+
+
         },
       });
       const json = await response.json();
 
       if (response.ok) {
         console.log(json);
+
         return navigate("/player/home");
+
       } else {
         console.log(json.error);
         seterrDisplay(json.error);
       }
     } else {
-      alert("Passwords do not match");
+
+
+       alert("Passwords do not match");
+
     }
   };
 
   return (
+
     <VStack spacing={2}>
       <FormControl onSubmit={LoginFormSubmit}>
         <FormLabel>Name</FormLabel>
@@ -113,6 +122,9 @@ const PlayerSignup = () => {
       </Link>
       <div>{errDisplay && <p>{errDisplay}</p>}</div>
     </VStack>
+
+  
+
   );
 };
 

@@ -1,3 +1,4 @@
+
 import React from "react";
 
 import { Link, NavLink } from "react-router-dom";
@@ -34,6 +35,7 @@ const Navbar = () => {
               aria-label="Search"
             />
             <button className="btn btn-outline-success" type="submit">
+
               Search
             </button>
           </form>
