@@ -1,26 +1,54 @@
-import { NavLink , Link} from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import CoachLogin from "./CoachLogin";
+import CoachSignup from "./CoachSignup";
+import {
+  Container,
+  Box,
+  Text,
+  Center,
+  Tab,
+  Tabs,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from "@chakra-ui/react";
 
 const CoachWelcome = () => {
   return (
-    <div>
-      <h2>
-        Welcome, where passionate coaches connect
-        with eager students to elevate their sports performance to new heights.
-        As a coach on our platform, You can guide and inspire athletes
-        on their journey to success.
-      </h2>
-      <div>
-        <div>
-          <NavLink className = "btn btn-primary my-2" to="/coach/login">login</NavLink>
-        </div>
-        <div>
-          <NavLink className = "btn btn-primary my-2" to="/coach/signup">signup</NavLink>
-        </div>
-        <div>
-          <NavLink className = "btn btn-primary my-2" to="/">back</NavLink>
-        </div>
-      </div>
-    </div>
+    <Container maxW="xl" centerContent>
+      <Box
+        d="flex"
+        justifyContent="center"
+        p={3}
+        bg={"white"}
+        w="100%"
+        m="40px 0 15px 0"
+        borderRadius="lg"
+        borderWidth="1px"
+      >
+        <Center bg="tomato" h="100px" color="white">
+          <Text justifyContent="center" fontSize="4xl" fontFamily="Work Sans">
+            Coach Homepage
+          </Text>
+        </Center>
+      </Box>
+      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
+        <Tabs variant="soft-rounded">
+          <TabList mb="1em">
+            <Tab width="50%">Login</Tab>
+            <Tab width="50%">Sign Up</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <CoachLogin />
+            </TabPanel>
+            <TabPanel>
+              <CoachSignup />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Box>
+    </Container>
   );
 };
 
