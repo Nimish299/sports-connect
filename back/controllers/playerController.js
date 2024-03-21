@@ -70,7 +70,7 @@ const updateProfile = async (req, res) => {
       return res.status(404).json({ error: 'Player not found' });
     }
 
-    const { emailID, ...updatedData } = req.body;
+    const { emailID, password, ...updatedData } = req.body;
 
     player.set(updatedData);
 
