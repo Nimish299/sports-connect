@@ -9,6 +9,7 @@ const PlayerPostDetailsPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [status, setStatus] = useState();
   const [errorMessage, setErrorMessage] = useState('');
+  const [flag, setflag] = useState(false);
   const gotoPlayerCoach = () => {
     return navigate('/player/playerCoach');
   };
@@ -28,6 +29,7 @@ const PlayerPostDetailsPage = () => {
       }
       const data = await response.json();
       setPost(data);
+      statusfun(_id);
     } catch (error) {
       console.error('Error fetching post details:', error.message);
     }
@@ -45,14 +47,14 @@ const PlayerPostDetailsPage = () => {
     const json = await response.json();
 
     if (response.ok) {
+      setStatus('pending');
       console.log(json.message);
+      //setflag(true);
       // Check if a new request was created or an existing one was updated
       if (json.updated) {
         console.log('Existing request updated');
       } else {
         console.log('New request created');
-        getDetails(); // Fetch updated post details after request submission
-        statusfun(_id); // Fetch status immediately after request submission
       }
     } else {
       console.log(json.error);
@@ -86,8 +88,7 @@ const PlayerPostDetailsPage = () => {
   // Inside the useEffect hook
   useEffect(() => {
     getDetails();
-    statusfun(_id);
-  }, [[_id]]);
+  }, []);
 
   // Function to handle toggling form visibility
   const toggleFormVisibility = () => {
@@ -182,7 +183,6 @@ const PlayerPostDetailsPage = () => {
       ) : (
         <p>Loading...</p>
       )}
-      <button onClick={redirecttoplayerplayer}>Back to posts</button>
     </div>
   );
 };

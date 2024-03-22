@@ -5,7 +5,7 @@ import PostListDisplay from '../../components/player/PostListDisplay';
 const PlayerCoach = () => {
   const [playerPosts, setPlayerPosts] = useState([]);
   const [sport, setSport] = useState([]);
-
+  const [flag, setflag] = useState(false);
   const [filterinUse, setFilterinUse] = useState(false);
 
   const run = async () => {
@@ -15,6 +15,7 @@ const PlayerCoach = () => {
         'Content-type': 'application/json',
       },
     });
+    setflag(true);
     const json = await response.json();
 
     if (response.ok) {
@@ -26,7 +27,7 @@ const PlayerCoach = () => {
 
   useEffect(() => {
     run();
-  }, []);
+  }, [flag]);
 
   const navigate = useNavigate();
   const gotoPlayerHome = () => {
