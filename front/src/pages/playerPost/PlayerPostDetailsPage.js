@@ -4,77 +4,177 @@ import { useNavigate, useParams } from 'react-router-dom';
 const PlayerPostDetailsPage = () => {
   const navigate = useNavigate();
   const { _id } = useParams();
-  console.log(`id:`);
-  console.log(_id);
-  console.log(`id:`);
   const [post, setPost] = useState(null); // State to store the fetched post
-
+  const [message, setMessage] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [status, setStatus] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
   const gotoPlayerCoach = () => {
     return navigate('/player/playerCoach');
   };
   const redirecttoplayerplayer = () => {
     return navigate('/player/playerplayer');
   };
-
-  useEffect(() => {
-    const getDetails = async () => {
-      try {
-        console.log(_id);
-        const response = await fetch(`/api/playerpost/details/${_id}`, {
-          method: 'GET',
-          headers: {
-            'Content-type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch post details');
-        }
-        const data = await response.json();
-        setPost(data);
-        console.log(post);
-      } catch (error) {
-        console.error('Error fetching post details:', error.message);
+  const getDetails = async () => {
+    try {
+      const response = await fetch(`/api/playerpost/details/${_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch post details');
       }
-    };
+      const data = await response.json();
+      setPost(data);
+    } catch (error) {
+      console.error('Error fetching post details:', error.message);
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const user = { message };
+    const response = await fetch(`/api/playerpost/requestonpost/${_id}`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      console.log(json.message);
+      // Check if a new request was created or an existing one was updated
+      if (json.updated) {
+        console.log('Existing request updated');
+      } else {
+        console.log('New request created');
+        getDetails(); // Fetch updated post details after request submission
+        statusfun(_id); // Fetch status immediately after request submission
+      }
+    } else {
+      console.log(json.error);
+      setErrorMessage(json.error); // Set the error message received from the backend
+    }
+  };
+
+  // Inside the statusfun function
+  const statusfun = async (_id) => {
+    try {
+      const response = await fetch(`/api/playerpost/Statusonpost/${_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      setStatus(data.status); // Update status state
+    } catch (error) {
+      console.error('Error:', error.message);
+      setErrorMessage(error.message); // Set the error message received from the backend
+    }
+  };
+
+  // Inside the useEffect hook
+  useEffect(() => {
     getDetails();
-  }, []);
+    statusfun(_id);
+  }, [[_id]]);
+
+  // Function to handle toggling form visibility
+  const toggleFormVisibility = () => {
+    setShowForm(!showForm);
+  };
+
   const name = post?.playersInfo?.[0]?.name || 'Name not available';
   const playerLocation =
     post?.playersInfo?.[0]?.playerLocation || 'Location not available';
-  const status = post?.request?.[0]?.status;
+
+  // Function to fetch status
 
   return (
     <div>
       {post ? (
         <>
-          <div class='post-container'>
+          <div className='post-container'>
             {post ? (
-              <div class='post-card'>
-                <h2 class='post-title'>Title: {post.title}</h2>
-                <h3 class='post-subtitle'>Description: {post.description}</h3>
+              <div className='post-card'>
+                <h2 className='post-title'>Title: {post.title}</h2>
+                <h3 className='post-subtitle'>
+                  Description: {post.description}
+                </h3>
                 {/* Display other details as needed */}
-                <div class='post-body'>
-                  <p class='post-text'>Name: {name}</p>
-                  <p class='post-text'>Sports: {post.sport}</p>
-                  <p class='post-text'>Skill: {post.skill}</p>
-                  <p class='post-text'>Number of Openings: {post.quantity}</p>
-                  <p class='post-text'>Court: {post.location}</p>
-                  <p class='post-text'>City: {playerLocation}</p>
+                <div className='post-body'>
+                  <p className='post-text'>Name: {name}</p>
+                  <p className='post-text'>Sports: {post.sport}</p>
+                  <p className='post-text'>Skill: {post.skill}</p>
+                  <p className='post-text'>
+                    Number of Openings: {post.quantity}
+                  </p>
+                  <p className='post-text'>Court: {post.location}</p>
+                  <p className='post-text'>City: {playerLocation}</p>
                 </div>
               </div>
             ) : (
               <p>Loading...</p>
             )}
-            <button class='post-button' onClick={redirecttoplayerplayer}>
+            <button className='post-button' onClick={redirecttoplayerplayer}>
               Back to posts
             </button>
-            <button class='post-button'>Request</button>
+            <div>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button
+                  className='btn btn-primary'
+                  onClick={toggleFormVisibility}
+                >
+                  {showForm ? 'Request' : 'Request'}
+                </button>
+              </div>
+
+              {showForm && (
+                <div>
+                  <h2 style={{ textAlign: 'center' }}>
+                    Request a Player For playing
+                  </h2>
+                  <form
+                    style={{ maxWidth: '500px', margin: '0 auto' }}
+                    onSubmit={handleSubmit}
+                  >
+                    <div className='form-group'>
+                      <label>Message</label>
+                      <input
+                        type='text'
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        className='form-control'
+                        placeholder='Enter your message'
+                      />
+                    </div>
+                    {errorMessage && (
+                      <p style={{ color: 'red' }}>{errorMessage}</p>
+                    )}
+
+                    <button type='submit' className='btn btn-primary'>
+                      Submit
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              {/* The rest of your code for displaying existing player posts and back button */}
+            </div>
+
             {status && (
-              <button
-                className={`post-button button-${status}`}
-                // onClick={handleRequest}
-              >
-                Status
+              <button className={`post-button-status button-${status}`}>
+                {status}
               </button>
             )}
           </div>

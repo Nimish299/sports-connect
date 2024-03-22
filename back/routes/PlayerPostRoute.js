@@ -12,6 +12,8 @@ const {
   allPlayerPosts,
   getdetails,
   playerPostbySport,
+  requestonpost,
+  Statusonpost,
 } = require('../controllers/playerPostController');
 
 router.use(
@@ -21,10 +23,13 @@ router.use(
     '/create',
     '/allPlayerPost',
     '/allplayerposts',
+    '/requestonpost',
+    '/Statusonpost',
   ],
   playermiddle
 );
-
+router.get('/Statusonpost/:_id', Statusonpost);
+router.post('/requestonpost/:_id', requestonpost);
 router.delete('/delete', deletePlayerPost);
 router.patch('/updatequantity', updateQuantity);
 router.post('/create', createPlayerPost);

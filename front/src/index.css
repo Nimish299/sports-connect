@@ -132,7 +132,15 @@ code {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
+.post-button-status {
+  padding: 10px 20px;
+  border: none;
+  /* background-color: #007bff; */
+  margin: 1%;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 .post-button:hover {
   opacity: 0.8;
 }

@@ -116,6 +116,78 @@ const playerPostbySport = async (req, res) => {
   return res.status(200).json(post);
 };
 
+const requestonpost = async (req, res) => {
+  try {
+    // Extract required fields from the request body
+    const { message } = req.body;
+    const playerId = req.playerid;
+    const postId = req.params._id;
+
+    // Find the player post
+    const post = await playerPostModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    const existingRequest = post.requests.find(
+      (request) => request.playerId === playerId
+    );
+
+    if (existingRequest) {
+      // If a request already exists for the playerId, send an error response
+      return res.status(400).json({ error: 'Request already exists ' });
+    }
+    // Construct the request object
+    const request = {
+      playerId,
+      message,
+      status: 'pending', // Assuming the default status is pending
+    };
+
+    // Push the request to the post's requests array
+    post.requests.push(request);
+
+    // Save the updated post
+    await post.save();
+
+    res.status(201).json({ message: 'Request created successfully' });
+  } catch (error) {
+    console.error('Error in Request player post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const Statusonpost = async (req, res) => {
+  try {
+    const playerId = req.playerid;
+    const postId = req.params._id;
+    console.log('Player ID:', playerId); // Log player ID
+    console.log('Post ID:', postId);
+    const post = await playerPostModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    console.log('All playerIds in requests array:');
+    post.requests.forEach((request) => {
+      console.log(request.playerId);
+    });
+    const existingRequest = post.requests.find(
+      (request) => request.playerId === playerId
+    );
+
+    if (!existingRequest) {
+      return res.status(404);
+    }
+
+    // Send the status of the existing request
+    res.status(200).json({ status: existingRequest.status });
+  } catch (error) {
+    console.error('Error in Request player post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createPlayerPost,
   updateQuantity,
@@ -124,4 +196,6 @@ module.exports = {
   allPlayerPosts,
   getdetails,
   playerPostbySport,
+  requestonpost,
+  Statusonpost,
 };
