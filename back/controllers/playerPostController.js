@@ -53,6 +53,7 @@ const createPlayerPost = async (req, res) => {
   }
 };
 
+//no needed
 const updateQuantity = async (req, res) => {
   const { name, quantity } = req.body;
   const post = await playerPostModel.findOneAndUpdate(
@@ -91,15 +92,21 @@ const allPlayerPost = async (req, res) => {
 };
 
 const allPlayerPosts = async (req, res) => {
-  const posts = await playerPostModel.find();
+  // const posts = await playerPostModel.find();
+  const playerId = req.playerid;
+
+  // Fetch all posts excluding those created by the player
+  const posts = await playerPostModel.find({ createdBy: { $ne: playerId } });
   return res.status(200).json(posts);
 };
 
 const getdetails = async (req, res) => {
   console.log('hi');
-  const name = req.params.name;
-  const post = await playerPostModel.findOne({ name });
-  console.log(name, post);
+  const _id = req.params._id;
+  console.log(_id);
+  const post = await playerPostModel.findOne({ _id });
+
+  console.log(post); // Log the retrieved post object
   return res.status(200).json(post);
 };
 

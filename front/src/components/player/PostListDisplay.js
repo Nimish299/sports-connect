@@ -33,14 +33,16 @@ const PostListDisplay = ({ playerPost, navigate }) => {
 
     alert('Added to starred List');
   };
-
+  // console.log(playerPost._id);
   const gotoPost = (e) => {
     e.preventDefault();
-    return navigate(`/playerpost/${playerPost.name}`);
+    console.log(playerPost._id);
+    return navigate(`/playerpost/${playerPost._id}`);
   };
   const name = playerPost.playersInfo?.[0]?.name || 'Name not available';
   const playerLocation =
     playerPost.playersInfo?.[0]?.playerLocation || 'Location not available';
+  const status = playerPost?.request?.[0]?.status;
   return (
     <div className='card mx-3 my-3' style={{ width: '18rem' }}>
       <div className='card-body'>
@@ -85,6 +87,14 @@ const PostListDisplay = ({ playerPost, navigate }) => {
               >
                 See details
               </button>
+              {status && (
+                <button
+                  className={`post-button button-${status}`}
+                  // onClick={handleRequest}
+                >
+                  Status
+                </button>
+              )}
               {errDisplay && <p>{errDisplay}</p>}
             </div>
           )}

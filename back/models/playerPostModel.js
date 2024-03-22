@@ -119,7 +119,7 @@ const playerPostSchema = new mongoose.Schema({
       },
       playerLocation: {
         type: String,
-        required: true,
+        // required: true,
         // trim: true,
       },
     },

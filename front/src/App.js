@@ -56,7 +56,7 @@ function App() {
             />
             <Route path='/player/starred' element={<StarredPosts />} />
             <Route
-              path='/playerpost/:name'
+              path='/playerpost/:_id'
               element={<PlayerPostDetailsPage />}
             />
 

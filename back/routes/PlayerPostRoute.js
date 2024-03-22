@@ -29,8 +29,8 @@ router.delete('/delete', deletePlayerPost);
 router.patch('/updatequantity', updateQuantity);
 router.post('/create', createPlayerPost);
 router.get('/allPlayerPost', allPlayerPost);
-router.get('/allplayerposts', allPlayerPosts);
-router.get('/details/:name', getdetails);
+router.get('/allplayerposts/', allPlayerPosts);
+router.get('/details/:_id', getdetails);
 router.get('/sport/:sport', playerPostbySport);
 
 module.exports = router;

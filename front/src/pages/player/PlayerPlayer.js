@@ -1,106 +1,107 @@
-import { useNavigate } from "react-router-dom"
-import { useState,useEffect } from "react"
-import PostListDisplay from "../../components/player/PostListDisplay"
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import PostListDisplay from '../../components/player/PostListDisplay';
 
 const PlayerCoach = () => {
+  const [playerPosts, setPlayerPosts] = useState([]);
+  const [sport, setSport] = useState([]);
 
-	const [playerPosts,setPlayerPosts]=useState([])
-	const [sport,setSport]=useState([])
+  const [filterinUse, setFilterinUse] = useState(false);
 
-	const [filterinUse,setFilterinUse]=useState(false)
+  const run = async () => {
+    const response = await fetch('/api/playerpost/allplayerposts', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    const json = await response.json();
 
-	const run=async()=>{
-		const response=await fetch('/api/playerpost/allplayerposts',{
-			method:'GET',
-			headers:{
-				'Content-type':'application/json'
-			}
-		})
-		const json=await response.json()
+    if (response.ok) {
+      setPlayerPosts(json);
+    } else {
+      console.log(json.error);
+    }
+  };
 
-		if(response.ok){
-			setPlayerPosts(json);
-		}
-		else{
-			console.log(json.error)
-		}
-	}
+  useEffect(() => {
+    run();
+  }, []);
 
-	useEffect(()=>{
-		
-		run()
-	},[])
+  const navigate = useNavigate();
+  const gotoPlayerHome = () => {
+    return navigate('/player/home');
+  };
 
-	const navigate=useNavigate()
-	const gotoPlayerHome=()=>{
-    return navigate('/player/home')
-  }
+  const filterPlayerPosts = async () => {
+    const response = await fetch(`/api/playerpost/sport/${sport}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    const json = await response.json();
+    setPlayerPosts(json);
+    setFilterinUse(true);
+  };
 
-	const filterPlayerPosts=async ()=>{
-		const response =await fetch(`/api/playerpost/sport/${sport}`,{
-			method:'GET',
-			headers:{
-				'Content-type':'application/json'
-			}
-		})
-		const json =await response.json();
-		setPlayerPosts(json);
-		setFilterinUse(true);
-	}
-	
-	const removeFilter=()=>{
-		run();
-		setFilterinUse(false);
-	}
-	const redirecttoapplied=()=>{
-		return navigate('/player/starred')
-	}
-  const redirecttomyposts=()=>{
-		return navigate('/player/myposts')
-	}
+  const removeFilter = () => {
+    run();
+    setFilterinUse(false);
+  };
+  const redirecttoapplied = () => {
+    return navigate('/player/starred');
+  };
+  const redirecttomyposts = () => {
+    return navigate('/player/myposts');
+  };
 
-	return (
-		<div>
-			<div>
-				<button onClick={gotoPlayerHome}>back</button>
-			</div>
-			<div>
-				<button onClick={redirecttoapplied}>go to starred posts</button>
-			</div>
-      <div>
-				<button onClick={redirecttomyposts}>see all your posts</button>
-			</div>
+  return (
+    <div class='container'>
+      <div class='button-container'>
+        <button onClick={gotoPlayerHome}>Back</button>
+        <button onClick={redirecttoapplied}>Go to Starred Posts</button>
+        <button onClick={redirecttomyposts}>See All Your Posts</button>
+      </div>
 
-			<div>
-				{
-					!filterinUse &&
-					<div>
-							<button onClick={filterPlayerPosts}>filter based on sport</button>
-						<input 
-							type="text"
-							value={sport}
-							onChange={(e)=>{setSport(e.target.value)}}
-						/>
-					</div>	
-					
-				}
-				{
-					filterinUse &&
-					<div>
-						<h3>filtered category is : {sport}</h3>
-						<button onClick={removeFilter}>remove filter</button>
-					</div>	
-				}
-			</div>
-			<h2>these are the available PlayerPosts</h2>
+      <div class='filter-container'>
+        {!filterinUse && (
+          <div>
+            <button onClick={filterPlayerPosts}>Filter Based on Sport</button>
+            <input
+              type='text'
+              value={sport}
+              onChange={(e) => {
+                setSport(e.target.value);
+              }}
+            />
+          </div>
+        )}
 
-			<div className="row d-flex">
-				{playerPosts && playerPosts.map((post)=>(
-					<PostListDisplay key={post.name} playerPost={post} navigate={navigate}/>
-				))}
-			</div>
-		</div>
-	)
-}
+        {filterinUse && (
+          <div class='filtered-category'>
+            <h3>Filtered category is: {sport}</h3>
+            <button onClick={removeFilter}>Remove Filter</button>
+          </div>
+        )}
+      </div>
 
-export default PlayerCoach
+      <h2>These Are the Available PlayerPosts</h2>
+
+      <div class='post-list'>
+        {playerPosts &&
+          playerPosts.map((post) => (
+            <div class='post-item'>
+              <PostListDisplay
+                key={post.name}
+                playerPost={post}
+                navigate={navigate}
+              />
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+export default PlayerCoach;
