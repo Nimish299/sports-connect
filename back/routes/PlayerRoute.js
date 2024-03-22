@@ -15,6 +15,7 @@ const {
   addtostarred,
   starred,
   removefromstarred,
+  fetchPlayerInfo,
 } = require('../controllers/playerController');
 
 router.post('/signup', signup);
@@ -31,10 +32,13 @@ router.use(
     '/starred',
     '/removefromstarred',
     '/updateProfile',
+    '/fetchPlayerInfo',
   ],
   playermiddle
 );
+
 router.get('/profile', profile);
+router.get('/profile/info', fetchPlayerInfo);
 router.put('/updateProfile', updateProfile);
 router.post('/applytoacad', applytoacad);
 router.get('/applied', applied);

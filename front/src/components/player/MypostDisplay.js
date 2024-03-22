@@ -1,98 +1,89 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
-  const [quantity, setQuantity] = useState(0);
-
-  const updatePlayerPost = async (e, istrue) => {
-    e.preventDefault();
-
-    if (istrue) {
-      let temp = parseInt(playerPost.quantity, 10) + parseInt(quantity, 10);
-      playerPost.quantity = temp;
-    } else {
-      playerPost.quantity = quantity;
-    }
-
-    const response = await fetch(`/api/playerpost/updatequantity`, {
-      method: "PATCH",
-      body: JSON.stringify(playerPost),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    const json = await response.json();
-
-    if (response.ok) {
-      console.log(json);
-    } else {
-      console.log(json.error);
-    }
-    const updatedPlayerPosts = playerPosts.map((acad) => {
-      if (acad.name === playerPost.name) {
-        acad.quantity = playerPost.quantity;
-      }
-      return acad;
-    });
-    setPlayerPosts(updatedPlayerPosts);
-  };
   const deletePlayerPost = async (e) => {
     e.preventDefault();
 
     const response = await fetch(`/api/playerpost/delete`, {
-      method: "DELETE",
+      method: 'DELETE',
       body: JSON.stringify(playerPost),
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
     const json = await response.json();
 
     if (response.ok) {
       console.log(json);
-      console.log("here");
+      // Remove the deleted post from the local state
+      const updatedPlayerPosts = playerPosts.filter(
+        (post) => post._id !== playerPost._id
+      );
+      setPlayerPosts(updatedPlayerPosts);
     } else {
       console.log(json.error);
     }
-    const updatedPlayerPosts = playerPosts.filter(
-      (acad) => acad.emailID !== json.emailID
-    );
-    setPlayerPosts(updatedPlayerPosts);
   };
 
+  // Assuming playerPost.playerInfo is an object containing name and emailID
+  // Ensure playerPost.playerInfo exists before destructure
+  const name = playerPost.playersInfo?.[0]?.name || 'Name not available';
+  const playerLocation =
+    playerPost.playersInfo?.[0]?.playerLocation || 'Location not available';
+
+  // console.log(playerPost);
   return (
     <>
-      <div className="card mx-2 my-2" style={{ width: "18rem" }}>
-        <div className="card-body">
-          <h5 className="card-title">PlayerPost name: {playerPost.name}</h5>
-          <h6 className="card-subtitle mb-2 text-muted">
-            number of openings : {playerPost.quantity}
+      <div
+        className='card mx-2 my-2'
+        style={{
+          width: '18rem',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+          borderRadius: '8px',
+          overflow: 'hidden',
+        }}
+      >
+        <div className='card-body'>
+          <h5
+            className='card-title'
+            style={{
+              marginBottom: '10px',
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}
+          >
+            {playerPost.title}
+          </h5>
+          <h6
+            className='card-subtitle mb-2 text-muted'
+            style={{ fontSize: '0.9rem' }}
+          >
+            Description: {playerPost.description}
           </h6>
-          <p className="card-text">sport: {playerPost.sport}</p>
-          <div>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => {
-                setQuantity(e.target.value);
-              }}
-            ></input>
+          <p className='card-text' style={{ marginBottom: '5px' }}>
+            Name: {name}
+          </p>
+          <p className='card-text' style={{ marginBottom: '5px' }}>
+            Sports: {playerPost.sport}
+          </p>
+          <p className='card-text' style={{ marginBottom: '5px' }}>
+            Skill: {playerPost.skill}
+          </p>
+          <p className='card-text' style={{ marginBottom: '5px' }}>
+            Number of Openings: {playerPost.quantity}
+          </p>
+          <p className='card-text' style={{ marginBottom: '5px' }}>
+            Court: {playerPost.location}
+          </p>
+          <p className='card-text' style={{ marginBottom: '5px' }}>
+            City: {playerLocation}
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              className="btn btn-primary my-2"
-              onClick={(e) => {
-                updatePlayerPost(e, true);
-              }}
+              className='btn btn-danger'
+              onClick={deletePlayerPost}
+              style={{ fontSize: '0.9rem', padding: '0.3rem 0.75rem' }}
             >
-              Add this amount
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={(e) => {
-                updatePlayerPost(e, false);
-              }}
-            >
-              Set this amount
-            </button>
-            <button className="btn btn-danger mx-2" onClick={deletePlayerPost}>
               Delete
             </button>
           </div>

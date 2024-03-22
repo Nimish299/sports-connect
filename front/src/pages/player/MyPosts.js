@@ -1,139 +1,223 @@
-import { useNavigate } from "react-router-dom";
-import MypostDisplay from "../../components/player/MypostDisplay";
-import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import MypostDisplay from '../../components/player/MypostDisplay';
+import { useEffect, useState } from 'react';
 
 const MyPosts = () => {
   const navigate = useNavigate();
   const [playerPosts, setPlayerPosts] = useState([]);
-
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState('');
+  const [skill, setSkill] = useState('');
+  const [description, setDescription] = useState('');
+  const [sport, setSport] = useState('');
   const [quantity, setQuantity] = useState(0);
-  const [sport, setSport] = useState("");
-  const [errDisplay, seterrDisplay] = useState("");
+  const [location, setLocation] = useState('');
+  const [playerInfo, setPlayerInfo] = useState('');
+  const [errDisplay, setErrDisplay] = useState('');
 
-  useEffect(() => {
-    const run = async () => {
-      const response = await fetch("/api/playerpost/allplayer", {
-        method: "GET",
+  const fetchPlayerPosts = async () => {
+    try {
+      const response = await fetch('/api/playerpost/allPlayerPost', {
+        method: 'GET',
         headers: {
-          "Content-type": "application/json",
+          'Content-type': 'application/json',
         },
       });
-      const json = await response.json();
-
       if (response.ok) {
-        console.log(json);
+        const json = await response.json();
         setPlayerPosts(json);
       } else {
-        console.log(json.error);
+        console.log('Error fetching player posts:', response.statusText);
       }
-    };
-    run();
-  }, []);
-
-  const addacad = async (e) => {
-    e.preventDefault();
-    const playerPost = { name, quantity, sport };
-    const response = await fetch(`/api/playerpost/create`, {
-      method: "POST",
-      body: JSON.stringify(playerPost),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    const json = await response.json();
-    if (response.ok) {
-      console.log(json);
-      setName("");
-      setQuantity(0);
-      setSport("");
-      seterrDisplay("");
-      setPlayerPosts((prev) => [...prev, playerPost]);
-    } else {
-      console.log(json.error);
-      seterrDisplay(json.error);
+    } catch (error) {
+      console.error('Error fetching player posts:', error);
     }
   };
 
-  const gotoplayerplayer = (e) => {
+  useEffect(() => {
+    fetchPlayerPosts();
+  }, []);
+  // let playerInfo = null;
+
+  const fletch_info = async () => {
+    try {
+      const response = await fetch('/api/player/profile/info', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        return await response.json();
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
+    } catch (error) {
+      console.error('Error fetching player info:', error);
+      throw new Error('Failed to fetch player info. Please try again later.');
+    }
+  };
+
+  const addPlayerPost = async (e) => {
     e.preventDefault();
-    return navigate("/player/playerplayer");
+    try {
+      // Fetch playerInfo
+      const playerInfo = await fletch_info();
+
+      // Create new post object with playerInfo
+      const newPost = {
+        title,
+        skill,
+        description,
+        sport,
+        quantity,
+        location,
+        playerInfo,
+      };
+      console.log('New Post:', newPost);
+      // Send POST request to create player post
+      const response = await fetch('/api/playerpost/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPost),
+      });
+
+      if (response.ok) {
+        const createdPost = await response.json();
+        setPlayerPosts((prevPosts) => [...prevPosts, createdPost]);
+        setTitle('');
+        setDescription('');
+        setSport('');
+        setQuantity(0);
+        setErrDisplay('');
+        setLocation('');
+        fetchPlayerPosts();
+        setSkill();
+      } else {
+        const errorData = await response.json();
+        setErrDisplay(errorData.error);
+      }
+    } catch (error) {
+      console.error('Error creating player post:', error);
+      setErrDisplay(
+        error.message || 'Failed to create player post. Please try again later.'
+      );
+    }
+  };
+  const goToPlayerPlayer = () => {
+    navigate('/player/playerplayer');
   };
 
   return (
     <div>
-      
       <div>
-        <h2>Add playerPost</h2>
-        
+        <div>
+          <h2 style={{ textAlign: 'center' }}>Add Player Post</h2>
+          <form
+            style={{ maxWidth: '500px', margin: '0 auto' }}
+            onSubmit={addPlayerPost}
+          >
+            <div className='form-group'>
+              <label>Title</label>
+              <input
+                type='text'
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className='form-control'
+                placeholder='Enter Title'
+              />
+            </div>
 
-        <form style ={{maxWidth: '500px'}}onSubmit={addacad}>
-          <div class="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              class="form-control"
-              id="name"
-              aria-describedby="emailHelp"
-              placeholder="Enter Name"
-            />
-          </div>
-          <div class="form-group">
-            <label>Quantity</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => {
-                setQuantity(e.target.value);
-              }}
-              class="form-control"
-              id="quantity"
-              aria-describedby="emailHelp"
-              placeholder="Enter Quantity"
-            />
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <input
-              value={sport}
-              onChange={(e) => {
-                setSport(e.target.value);
-              }}
-              type="number"
-              class="form-control"
-              id="sport"
-              placeholder="Enter Quantity"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">
-            Add
+            <div className='form-group'>
+              <label>Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className='form-control'
+                rows='3'
+                placeholder='Enter Description'
+              ></textarea>
+            </div>
+            <div className='form-group'>
+              <label>Sport</label>
+              <input
+                type='text'
+                value={sport}
+                onChange={(e) => setSport(e.target.value)}
+                className='form-control'
+                placeholder='Enter Sport'
+              />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='skill'>Skill</label>
+              <select
+                id='skill'
+                value={skill}
+                onChange={(e) => setSkill(e.target.value)}
+                className='form-control'
+                required // Add the required attribute to ensure HTML5 form validation
+              >
+                <option value=''>Select Skill</option>
+                <option value='Beginner'>Beginner</option>
+                <option value='Intermediate'>Intermediate</option>
+                <option value='Advanced'>Advanced</option>
+              </select>
+            </div>
+            <div className='form-group'>
+              <label>Patner Require</label>
+              <input
+                type='number'
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className='form-control'
+                placeholder='Enter Quantity'
+              />
+            </div>
+            <div className='form-group'>
+              <label>Court:</label>
+              <input
+                type='text'
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className='form-control'
+                placeholder='Enter Location'
+              />
+            </div>
+            <button type='submit' className='btn btn-primary'>
+              Add
+            </button>
+          </form>
+          {errDisplay && <p>{errDisplay}</p>}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <h1>Your Player Posts</h1>
+        </div>
+        <div className='row justify-content-center'>
+          {playerPosts &&
+            playerPosts.map((post, index) => (
+              <div
+                key={post._id}
+                className='col-md-3 mb-3'
+                style={{ marginLeft: '2px' }}
+              >
+                <MypostDisplay
+                  playerPosts={playerPosts}
+                  setPlayerPosts={setPlayerPosts}
+                  playerPost={post}
+                />
+              </div>
+            ))}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button className='btn btn-primary' onClick={goToPlayerPlayer}>
+            Back
           </button>
-        </form>
-
-        <div>{errDisplay && <p>{errDisplay}</p>}</div>
-      </div>
-      <div>
-        <h1>u have added all these playerPost openings</h1>
-      </div>
-      <div className="row">
-        {playerPosts &&
-          playerPosts.map((acad) => (
-            <MypostDisplay
-              key={acad.name}
-              playerPosts={playerPosts}
-              setPlayerPosts={setPlayerPosts}
-              playerPost={acad}
-            />
-          ))}
-      </div>
-	  <div>
-        <button className ="btn btn-primary" onClick={(e) => gotoplayerplayer(e)}>back</button>
+        </div>
       </div>
     </div>
   );
 };
+
 export default MyPosts;

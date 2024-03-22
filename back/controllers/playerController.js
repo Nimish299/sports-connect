@@ -12,12 +12,17 @@ createToken = (id) => {
 };
 
 const signup = async (req, res) => {
-  const { name, emailID, password } = req.body;
+  const { name, emailID, password, mobileNumber } = req.body;
   const player = await playerModel.findOne({ emailID });
 
   if (!player) {
     try {
-      const player = await playerModel.create({ name, emailID, password });
+      const player = await playerModel.create({
+        name,
+        emailID,
+        password,
+        mobileNumber,
+      });
       console.log(player);
       const token = createToken(player._id);
       res.cookie('playerid', token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -29,7 +34,35 @@ const signup = async (req, res) => {
     res.status(400).json({ error: 'already exists' });
   }
 };
+const fetchPlayerInfo = async (req, res) => {
+  try {
+    // Find the player by their _id
+    const player = await playerModel.findOne({ _id: req.playerid });
 
+    // If player not found, return an error response
+    if (!player) {
+      return res.status(404).json({ error: 'Player not found' });
+    }
+
+    // Extract the name and general information from the player object
+    const { name, emailID, mobileNumber, location } = player;
+
+    // Create a new object containing only the name and general information
+    const playerInfo = {
+      name,
+      emailID,
+      mobileNumber,
+      location,
+    };
+
+    // Return the player's name and general information as JSON response
+    res.status(200).json(playerInfo);
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error('Error fetching player information:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 const login = async (req, res) => {
   const { emailID, password } = req.body;
   try {
@@ -211,4 +244,5 @@ module.exports = {
   addtostarred,
   starred,
   removefromstarred,
+  fetchPlayerInfo,
 };
