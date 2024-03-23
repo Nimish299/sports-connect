@@ -153,7 +153,6 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
               <div className='request_post_post-item'>
                 <h3>Request {index + 1}</h3>
                 <p>Message: {post.message}</p>
-                <p>Timestamp: {formatTimestamp(post.timestamp)}</p>
                 <p>Status: {post.status}</p>
                 {/* Render player information */}
                 {post.playerInfo && (
@@ -197,6 +196,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
                     )}
                   </div>
                 )}
+                <p>Date & time : {formatTimestamp(post.timestamp)}</p>
               </div>
             </div>
           ))}
