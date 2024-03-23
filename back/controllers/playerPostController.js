@@ -53,26 +53,22 @@ const createPlayerPost = async (req, res) => {
   }
 };
 
-//no needed
-const updateQuantity = async (req, res) => {
-  const { name, quantity } = req.body;
-  const post = await playerPostModel.findOneAndUpdate(
-    { name },
-    { $set: { quantity } }
-  );
-  if (post) {
-    return res.status(200).json(post);
-  }
-  return res.status(400).json({ error: 'this playerPost doesnt exists' });
-};
-
 const deletePlayerPost = async (req, res) => {
-  const { name } = req.body;
-  const acad = await playerPostModel.findOneAndDelete({ name });
+  const { _id, createdBy } = req.body;
+  const playerId = req.playerid; // Assuming req.playerid contains the playerId
+
+  // Check if createdby matches playerId
+  if (createdBy !== playerId) {
+    return res
+      .status(403)
+      .json({ error: 'You are not authorized to delete this post.' });
+  }
+
+  const acad = await playerPostModel.findOneAndDelete({ _id });
   if (acad) {
     return res.status(200).json(acad);
   }
-  return res.status(400).json({ error: 'this playerPost doesnt exist' });
+  return res.status(400).json({ error: 'This player post does not exist.' });
 };
 
 const allPlayerPost = async (req, res) => {
@@ -101,12 +97,10 @@ const allPlayerPosts = async (req, res) => {
 };
 
 const getdetails = async (req, res) => {
-  console.log('hi');
   const _id = req.params._id;
-  console.log(_id);
-  const post = await playerPostModel.findOne({ _id });
 
-  console.log(post); // Log the retrieved post object
+  const post = await playerPostModel.findOne({ _id });
+  // Log the retrieved post object
   return res.status(200).json(post);
 };
 
@@ -115,7 +109,7 @@ const playerPostbySport = async (req, res) => {
   const post = await playerPostModel.find({ sport });
   return res.status(200).json(post);
 };
-
+// Post a request on a post
 const requestonpost = async (req, res) => {
   try {
     // Extract required fields from the request body
@@ -157,20 +151,75 @@ const requestonpost = async (req, res) => {
   }
 };
 
+// get all request for particular post
+const Getrequestonpost = async (req, res) => {
+  try {
+    const playerId = req.playerid;
+    const postId = req.params._id;
+    // const { _id, createdBy } = req.body;
+    // console.log(createdBy);
+    // console.log(playerId);
+    // Check if createdby matches playerId
+    // if (createdBy !== playerId) {
+    //   return res
+    //     .status(403)
+    //     .json({ error: 'You are not authorized to Get request ' });
+    // }
+    // Find the player post
+    const post = await playerPostModel.findById(postId);
+    console.log(post);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    // Extract player IDs from requests
+    const playerIds = post.requests.map((request) => request.playerId);
+
+    // Fetch player information for each player ID
+    const players = await playerModel.find({ _id: { $in: playerIds } });
+
+    // Map player IDs to player information
+    const playerInfoMap = {};
+    players.forEach((player) => {
+      playerInfoMap[player._id] = {
+        name: player.name,
+        emailID: player.emailID,
+        mobileNumber: player.mobileNumber,
+        social_media_links: player.social_interactions.social_media_links,
+        feedback_and_ratings: player.feedback_and_ratings,
+        // Add other fields as needed
+      };
+    });
+
+    // Combine request data with player information
+    const requestsWithPlayerInfo = post.requests.map((request) => ({
+      playerId: request.playerId,
+      playerInfo: playerInfoMap[request.playerId],
+      message: request.message,
+      timestamp: request.timestamp,
+      status: request.status,
+    }));
+    console.log(requestsWithPlayerInfo);
+    res.json(requestsWithPlayerInfo);
+  } catch (error) {
+    console.error('Error in Request player post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 const Statusonpost = async (req, res) => {
   try {
     const playerId = req.playerid;
     const postId = req.params._id;
-    console.log('Player ID:', playerId); // Log player ID
-    console.log('Post ID:', postId);
+
     const post = await playerPostModel.findById(postId);
 
     if (!post) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    console.log('All playerIds in requests array:');
+
     post.requests.forEach((request) => {
-      console.log(request.playerId);
+      // console.log(request.playerId);
     });
     const existingRequest = post.requests.find(
       (request) => request.playerId === playerId
@@ -190,7 +239,7 @@ const Statusonpost = async (req, res) => {
 
 module.exports = {
   createPlayerPost,
-  updateQuantity,
+  Getrequestonpost,
   deletePlayerPost,
   allPlayerPost,
   allPlayerPosts,

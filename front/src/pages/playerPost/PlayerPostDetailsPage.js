@@ -28,6 +28,7 @@ const PlayerPostDetailsPage = () => {
         throw new Error('Failed to fetch post details');
       }
       const data = await response.json();
+
       setPost(data);
       statusfun(_id);
     } catch (error) {
@@ -49,7 +50,7 @@ const PlayerPostDetailsPage = () => {
     if (response.ok) {
       setStatus('pending');
       console.log(json.message);
-      //setflag(true);
+      // setflag(false);
       // Check if a new request was created or an existing one was updated
       if (json.updated) {
         console.log('Existing request updated');
@@ -72,13 +73,9 @@ const PlayerPostDetailsPage = () => {
         },
       });
 
-      if (!response.ok) {
-        const errorMessage = await response.json();
-        throw new Error(errorMessage);
-      }
-
       const data = await response.json();
-      setStatus(data.status); // Update status state
+      setStatus(data.status);
+      setflag(true); // Update status state
     } catch (error) {
       console.error('Error:', error.message);
       setErrorMessage(error.message); // Set the error message received from the backend
@@ -87,8 +84,9 @@ const PlayerPostDetailsPage = () => {
 
   // Inside the useEffect hook
   useEffect(() => {
+    statusfun(_id);
     getDetails();
-  }, []);
+  }, [status]);
 
   // Function to handle toggling form visibility
   const toggleFormVisibility = () => {
@@ -130,48 +128,50 @@ const PlayerPostDetailsPage = () => {
             <button className='post-button' onClick={redirecttoplayerplayer}>
               Back to posts
             </button>
-            <div>
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <button
-                  className='btn btn-primary'
-                  onClick={toggleFormVisibility}
-                >
-                  {showForm ? 'Request' : 'Request'}
-                </button>
-              </div>
-
-              {showForm && (
-                <div>
-                  <h2 style={{ textAlign: 'center' }}>
-                    Request a Player For playing
-                  </h2>
-                  <form
-                    style={{ maxWidth: '500px', margin: '0 auto' }}
-                    onSubmit={handleSubmit}
+            {!status && (
+              <div>
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                  <button
+                    className='btn btn-primary'
+                    onClick={toggleFormVisibility}
                   >
-                    <div className='form-group'>
-                      <label>Message</label>
-                      <input
-                        type='text'
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className='form-control'
-                        placeholder='Enter your message'
-                      />
-                    </div>
-                    {errorMessage && (
-                      <p style={{ color: 'red' }}>{errorMessage}</p>
-                    )}
-
-                    <button type='submit' className='btn btn-primary'>
-                      Submit
-                    </button>
-                  </form>
+                    {showForm ? 'Request' : 'Request'}
+                  </button>
                 </div>
-              )}
 
-              {/* The rest of your code for displaying existing player posts and back button */}
-            </div>
+                {showForm && (
+                  <div>
+                    <h2 style={{ textAlign: 'center' }}>
+                      Request a Player For playing
+                    </h2>
+                    <form
+                      style={{ maxWidth: '500px', margin: '0 auto' }}
+                      onSubmit={handleSubmit}
+                    >
+                      <div className='form-group'>
+                        <label>Message</label>
+                        <input
+                          type='text'
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          className='form-control'
+                          placeholder='Enter your message'
+                        />
+                      </div>
+                      {errorMessage && (
+                        <p style={{ color: 'red' }}>{errorMessage}</p>
+                      )}
+
+                      <button type='submit' className='btn btn-primary'>
+                        Submit
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {/* The rest of your code for displaying existing player posts and back button */}
+              </div>
+            )}
 
             {status && (
               <button className={`post-button-status button-${status}`}>

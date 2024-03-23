@@ -211,21 +211,23 @@ const MyPosts = () => {
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <h1>Your Player Posts</h1>
         </div>
-        <div className='row justify-content-center'>
-          {playerPosts &&
-            playerPosts.map((post, index) => (
-              <div
-                key={post._id}
-                className='col-md-3 mb-3'
-                style={{ marginLeft: '2px' }}
-              >
-                <MypostDisplay
-                  playerPosts={playerPosts}
-                  setPlayerPosts={setPlayerPosts}
-                  playerPost={post}
-                />
-              </div>
-            ))}
+        <div className='my_post-grid-container'>
+          <div className='my_post-grid-container'>
+            {playerPosts &&
+              playerPosts.map((post, index) => (
+                <div
+                  key={post._id}
+                  className='my_post-grid-item'
+                  style={{ marginLeft: index % 4 !== 0 ? '2px' : '0' }}
+                >
+                  <MypostDisplay
+                    playerPosts={playerPosts}
+                    setPlayerPosts={setPlayerPosts}
+                    playerPost={post}
+                  />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>
