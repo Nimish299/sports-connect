@@ -118,6 +118,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   };
   useEffect(() => {
     // Getrequestonpost();
+    getStatusColor();
   }, [postRequests]);
   // Assuming playerPost.playerInfo is an object containing name and emailID
   // Ensure playerPost.playerInfo exists before destructure

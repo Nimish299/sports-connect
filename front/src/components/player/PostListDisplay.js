@@ -4,10 +4,12 @@ const PostListDisplay = ({ playerPost, navigate }) => {
   console.log(playerPost);
   const [errDisplay, seterrDisplay] = useState('');
   const [applied, setApplied] = useState(false);
-  const apply = async (e) => {
+
+  const apply_start = async (e) => {
     e.preventDefault();
-    const name = playerPost.name;
-    const item = { name };
+    const _id = playerPost._id;
+
+    const item = { _id };
     const response = await fetch('/api/player/addtostarred', {
       method: 'POST',
       body: JSON.stringify(item),
@@ -31,7 +33,7 @@ const PostListDisplay = ({ playerPost, navigate }) => {
     seterrDisplay('');
     setApplied(false);
 
-    alert('Added to starred List');
+    // alert('Added to starred List');
   };
   // console.log(playerPost._id);
   const gotoPost = (e) => {
@@ -99,10 +101,10 @@ const PostListDisplay = ({ playerPost, navigate }) => {
               <button
                 className='btn btn-primary btn-sm mx-2'
                 onClick={(e) => {
-                  apply(e);
+                  apply_start(e);
                 }}
               >
-                Add
+                Add to Star
               </button>
               <button
                 className='btn btn-primary btn-sm mx-2'
@@ -117,13 +119,14 @@ const PostListDisplay = ({ playerPost, navigate }) => {
           {applied && (
             <div>
               <label>Added to starred</label>
+
               <button
-                className='btn btn-danger btn-sm'
+                className='btn btn-primary btn-sm mx-2'
                 onClick={(e) => {
-                  acceptadded(e);
+                  gotoPost(e);
                 }}
               >
-                Ok
+                See details
               </button>
             </div>
           )}

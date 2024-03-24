@@ -101,7 +101,27 @@ const getdetails = async (req, res) => {
 
   const post = await playerPostModel.findOne({ _id });
   // Log the retrieved post object
+
   return res.status(200).json(post);
+};
+
+// get all post by sending pids
+// get all posts by sending post IDs
+const getpostsbyids = async (req, res) => {
+  try {
+    // console.log(`hi`);
+    const postIds = req.body.postIds; // Assuming postIds is an array of post IDs sent in the request body
+    // console.log(postIds);
+    // Find all posts whose _id is in the postIds array
+    const posts = await playerPostModel.find({ _id: { $in: postIds } });
+
+    // console.log(posts);
+    // Return the array of posts in the response
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error retrieving posts by IDs:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 const playerPostbySport = async (req, res) => {
@@ -114,7 +134,7 @@ const requestonpost = async (req, res) => {
   try {
     // Extract required fields from the request body
     const { message } = req.body;
-    const playerId = req.playerid;
+
     const postId = req.params._id;
 
     // Find the player post
@@ -299,4 +319,5 @@ module.exports = {
   requestonpost,
   Statusonpost,
   POSTAccept,
+  getpostsbyids,
 };

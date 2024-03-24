@@ -29,7 +29,7 @@ const playerSchema = new mongoose.Schema(
     ],
     starred: [
       {
-        name: {
+        post_id: {
           type: String,
         },
       },
