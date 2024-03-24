@@ -117,7 +117,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
     setflag(false);
   };
   useEffect(() => {
-    console.log('Updated post requests:', postRequests);
+    // Getrequestonpost();
   }, [postRequests]);
   // Assuming playerPost.playerInfo is an object containing name and emailID
   // Ensure playerPost.playerInfo exists before destructure
