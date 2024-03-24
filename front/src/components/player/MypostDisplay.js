@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react';
 const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   const [postRequests, setpostRequests] = useState([]);
   const [flag, setflag] = useState(false);
+  const [acceptflag, setacceptflag] = useState(false);
+  const [postAccept, setpostAccept] = useState([]);
+
+  //delete post
   const deletePlayerPost = async (e) => {
     e.preventDefault();
 
@@ -26,6 +30,8 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
       console.log(json.error);
     }
   };
+
+  //all req in a post
   const Getrequestonpost = async (e) => {
     e.preventDefault();
 
@@ -53,10 +59,60 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
       console.error('Error:', error.message);
     }
   };
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString(); // Adjust format as needed
+
+  //accept a post && reject Remaining
+  const acceptRequest = async (req) => {
+    try {
+      console.log(`Accepted`);
+      console.log(req);
+      const response = await fetch(`/api/playerpost/POSTAccept`, {
+        method: 'POST',
+        body: JSON.stringify(req),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const json = await response.json();
+      setpostAccept(json);
+      setacceptflag(true);
+      console.log(`postAccept`);
+      console.log(postAccept);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
   };
+
+  //time formating
+  const formatTimestamp = (timestamp) => {
+    const currentTime = new Date();
+    const postTime = new Date(timestamp);
+    const diff = currentTime - postTime;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      // If more than a day, show date
+      return postTime.toLocaleDateString();
+    } else if (hours > 0) {
+      // If more than an hour, show hours ago
+      return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+    } else if (minutes > 0) {
+      // If more than a minute, show minutes ago
+      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+    } else {
+      // Otherwise, show seconds ago
+      return `${seconds} ${seconds === 1 ? 'second' : 'seconds'} ago`;
+    }
+  };
+
+  // flag remove request
   const removerequest = () => {
     setflag(false);
   };
@@ -68,6 +124,20 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   const name = playerPost.playersInfo?.[0]?.name || 'Name not available';
   const playerLocation =
     playerPost.playersInfo?.[0]?.playerLocation || 'Location not available';
+
+  //color of status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'yellow'; // Adjust color as needed
+      case 'accepted':
+        return 'green'; // Adjust color as needed
+      case 'rejected':
+        return 'red'; // Adjust color as needed
+      default:
+        return 'black'; // Default color
+    }
+  };
 
   // console.log(playerPost);
   return (
@@ -117,6 +187,8 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
           <p className='card-text' style={{ marginBottom: '5px' }}>
             City: {playerLocation}
           </p>
+          <p>Posted: {formatTimestamp(playerPost.createdAt)}</p>
+
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
               className='btn btn-danger'
@@ -148,55 +220,92 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
       </div>
       {flag && (
         <div className='request_post_table-container'>
-          {postRequests.map((post, index) => (
+          {postRequests.map((req, index) => (
             <div key={index} className='request_post_table-column'>
               <div className='request_post_post-item'>
                 <h3>Request {index + 1}</h3>
-                <p>Message: {post.message}</p>
-                <p>Status: {post.status}</p>
+                <p>Message: {req.message}</p>
+                <p>
+                  Status:{' '}
+                  <span style={{ color: getStatusColor(req.status) }}>
+                    {req.status}
+                  </span>
+                </p>
+
                 {/* Render player information */}
-                {post.playerInfo && (
+                {req.playerInfo && (
                   <div className='request_post_player-info'>
                     <h4>Player Information</h4>
-                    <p>Name: {post.playerInfo.name}</p>
-                    {/* <p>Email: {post.playerInfo.emailID}</p> */}
-                    {/* <p>Mobile Number: {post.playerInfo.mobileNumber}</p> */}
-                    {/* Render social media links */}
-                    {post.playerInfo.social_media_links && (
-                      <div className='request_post_social-media-links'>
-                        <h5>Social Media Links</h5>
-                        <p>
-                          Facebook:{' '}
-                          {post.playerInfo.social_media_links.facebook}
-                        </p>
-                        <p>
-                          Twitter: {post.playerInfo.social_media_links.twitter}
-                        </p>
-                        <p>
-                          Instagram:{' '}
-                          {post.playerInfo.social_media_links.instagram}
-                        </p>
-                      </div>
+                    <p>Name: {req.playerInfo.name}</p>
+
+                    {getStatusColor(req.status) === 'green' && (
+                      <>
+                        <p>Email: {req.playerInfo.emailID}</p>
+                        <p>Mobile Number: {req.playerInfo.mobileNumber}</p>
+                        {req.playerInfo.social_media_links && (
+                          <div className='request_post_social-media-links'>
+                            <h5>Social Media Links</h5>
+                            <p>
+                              Facebook:{' '}
+                              {req.playerInfo.social_media_links.facebook}
+                            </p>
+                            <p>
+                              Twitter:{' '}
+                              {req.playerInfo.social_media_links.twitter}
+                            </p>
+                            <p>
+                              Instagram:{' '}
+                              {req.playerInfo.social_media_links.instagram}
+                            </p>
+                          </div>
+                        )}
+                      </>
                     )}
                     {/* Render feedback and ratings */}
-                    {post.playerInfo.feedback_and_ratings && (
+                    {req.playerInfo.feedback_and_ratings && (
                       <div className='request_post_feedback-ratings'>
                         <h5>Feedback and Ratings</h5>
                         <p>
                           Reviews:{' '}
-                          {post.playerInfo.feedback_and_ratings.reviews.join(
+                          {req.playerInfo.feedback_and_ratings.reviews.join(
                             ', '
                           )}
                         </p>
                         <p>
-                          Ratings:{' '}
-                          {post.playerInfo.feedback_and_ratings.ratings}
+                          Ratings: {req.playerInfo.feedback_and_ratings.ratings}
                         </p>
                       </div>
                     )}
                   </div>
                 )}
-                <p>Date & time : {formatTimestamp(post.timestamp)}</p>
+                {getStatusColor(req.status) === 'yellow' && (
+                  <>
+                    <button
+                      className='btn btn-primary'
+                      onClick={() => acceptRequest(req)}
+                      style={{ fontSize: '0.9rem', padding: '0.3rem 0.75rem' }}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className='btn btn-danger'
+                      // onClick={() => acceptRequest(req)}
+                      style={{ fontSize: '0.9rem', padding: '0.3rem 0.75rem' }}
+                    >
+                      Reject
+                    </button>
+                    <p>Requested : {formatTimestamp(req.timestamp)}</p>
+                  </>
+                )}
+
+                {getStatusColor(req.status) === 'green' && (
+                  <>
+                    <p>
+                      {req.status + 'ed'}:{' '}
+                      {formatTimestamp(postAccept.timestamp)}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           ))}

@@ -14,6 +14,7 @@ const {
   requestonpost,
   Statusonpost,
   Getrequestonpost,
+  POSTAccept,
 } = require('../controllers/playerPostController');
 
 router.use(
@@ -26,6 +27,7 @@ router.use(
     '/requestonpost',
     '/Statusonpost',
     '/Getrequestonpost ',
+    '/POSTAccept',
   ],
   playermiddle
 );
@@ -34,6 +36,7 @@ router.post('/requestonpost/:_id', requestonpost);
 router.delete('/delete', deletePlayerPost);
 
 router.post('/create', createPlayerPost);
+router.post('/POSTAccept', POSTAccept);
 router.get('/allPlayerPost', allPlayerPost);
 router.get('/allplayerposts/', allPlayerPosts);
 router.get('/details/:_id', getdetails);
