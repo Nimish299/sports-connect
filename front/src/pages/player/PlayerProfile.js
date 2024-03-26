@@ -91,6 +91,10 @@ const PlayerProfile = () => {
               <Text>{profileData.emailID}</Text>
             </FormControl>
             <FormControl>
+              <FormLabel>Mobile Number</FormLabel>
+              <Text>{profileData.mobileNumber}</Text>
+            </FormControl>
+            <FormControl>
               <FormLabel>Location</FormLabel>
               <Text>{profileData.location}</Text>
             </FormControl>
@@ -156,7 +160,11 @@ const PlayerProfile = () => {
               Reviews: {profileData.feedback_and_ratings?.reviews?.join(', ')}
             </Text>
             <Button colorScheme='blue'>
-              <a href='/player/player-Edit-profile'>Profile</a>
+              <a href='/player/player-Edit-profile'>Edit Profile</a>
+            </Button>
+            <Divider />
+            <Button colorScheme='blue'>
+              <a href='/player/home'>Home</a>
             </Button>
           </>
         )}

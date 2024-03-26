@@ -1,32 +1,49 @@
-const express=require('express')
-const router=express.Router();
+const express = require('express');
+const router = express.Router();
 
 //middleware
-const {
-  playermiddle
-}=require('../middleware/academyMiddleware')
+const { playermiddle } = require('../middleware/academyMiddleware');
 
 const {
   createPlayerPost,
-  updateQuantity,
   deletePlayerPost,
-  allPlayer,
+  allPlayerPost,
   allPlayerPosts,
   getdetails,
-  playerPostbySport
-} =require('../controllers/playerPostController');
+  playerPostbySport,
+  requestonpost,
+  Statusonpost,
+  Getrequestonpost,
+  POSTAccept,
+  getpostsbyids,
+} = require('../controllers/playerPostController');
 
- 
+router.use(
+  [
+    '/delete',
 
+    '/create',
+    '/allPlayerPost',
+    '/allplayerposts',
+    '/requestonpost',
+    '/Statusonpost',
+    '/Getrequestonpost ',
+    '/POSTAccept',
+    '/getpostsbyids',
+  ],
+  playermiddle
+);
+router.post('/getpostsbyids', getpostsbyids);
+router.get('/Statusonpost/:_id', Statusonpost);
+router.post('/requestonpost/:_id', requestonpost);
+router.delete('/delete', deletePlayerPost);
 
-router.use(['/delete','/updatequantity','/create','/allplayer','/allplayerposts'],playermiddle)
+router.post('/create', createPlayerPost);
+router.post('/POSTAccept', POSTAccept);
+router.get('/allPlayerPost', allPlayerPost);
+router.get('/allplayerposts/', allPlayerPosts);
+router.get('/details/:_id', getdetails);
+router.get('/Getrequestonpost/:_id', Getrequestonpost);
+router.get('/sport/:sport', playerPostbySport);
 
-router.delete('/delete',deletePlayerPost)
-router.patch('/updatequantity',updateQuantity)
-router.post('/create',createPlayerPost);
-router.get('/allplayer',allPlayer)
-router.get('/allplayerposts',allPlayerPosts);
-router.get('/details/:name',getdetails)
-router.get('/sport/:sport',playerPostbySport)
-
-module.exports=router;
+module.exports = router;

@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const PostListDisplay = ({ playerPost, navigate }) => {
-  const [errDisplay, seterrDisplay] = useState("");
+  console.log(playerPost);
+  const [errDisplay, seterrDisplay] = useState('');
   const [applied, setApplied] = useState(false);
-  const apply = async (e) => {
+
+  const apply_start = async (e) => {
     e.preventDefault();
-    const name = playerPost.name;
-    const item = { name };
-    const response = await fetch("/api/player/addtostarred", {
-      method: "POST",
+    const _id = playerPost._id;
+
+    const item = { _id };
+    const response = await fetch('/api/player/addtostarred', {
+      method: 'POST',
       body: JSON.stringify(item),
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
 
@@ -27,65 +30,109 @@ const PostListDisplay = ({ playerPost, navigate }) => {
 
   const acceptadded = (e) => {
     e.preventDefault();
-    seterrDisplay("");
+    seterrDisplay('');
     setApplied(false);
 
-    alert("Added to starred List");
+    // alert('Added to starred List');
   };
-
+  // console.log(playerPost._id);
   const gotoPost = (e) => {
     e.preventDefault();
-    return navigate(`/playerpost/${playerPost.name}`);
+    console.log(playerPost._id);
+    return navigate(`/playerpost/${playerPost._id}`);
+  };
+  const name = playerPost.playersInfo?.[0]?.name || 'Name not available';
+  const playerLocation =
+    playerPost.playersInfo?.[0]?.playerLocation || 'Location not available';
+  const formatTimestamp = (timestamp) => {
+    const currentTime = new Date();
+    const postTime = new Date(timestamp);
+    const diff = currentTime - postTime;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      // If more than a day, show date
+      return postTime.toLocaleDateString();
+    } else if (hours > 0) {
+      // If more than an hour, show hours ago
+      return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+    } else if (minutes > 0) {
+      // If more than a minute, show minutes ago
+      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+    } else {
+      // Otherwise, show seconds ago
+      return `${seconds} ${seconds === 1 ? 'second' : 'seconds'} ago`;
+    }
   };
 
   return (
-    
-      <div className="card mx-3 my-3" style={{ width: "18rem" }}>
-        <div className="card-body">
-          <h5 className="card-title">name :{playerPost.name}</h5>
-          <h6 className="card-subtitle mb-2 text-muted">
-            sport : {playerPost.sport}
-          </h6>
+    <div className='card mx-3 my-3' style={{ width: '18rem' }}>
+      <div className='card-body'>
+        <h5
+          className='card-title mb-3'
+          style={{ fontSize: '1.25rem', fontWeight: 'bold' }}
+        >
+          {playerPost.title}
+        </h5>
+        <h6
+          className='card-subtitle mb-2 text-muted'
+          style={{ fontSize: '0.9rem' }}
+        >
+          Description: {playerPost.description}
+        </h6>
+        <p className='card-text mb-1'>Name: {name}</p>
+        <p className='card-text mb-1'>Sports: {playerPost.sport}</p>
+        <p className='card-text mb-1'>Skill: {playerPost.skill}</p>
+        <p className='card-text mb-1'>
+          Number of Openings: {playerPost.quantity}
+        </p>
+        <p className='card-text mb-1'>Court: {playerPost.location}</p>
+        <p className='card-text mb-1'>City: {playerLocation}</p>
+        <p>Posted: {formatTimestamp(playerPost.createdAt)}</p>
 
-          <div>
-            {!applied && (
-              <div>
-                <button
-                  className="btn btn-primary btn-sm mx-2"
-                  onClick={(e) => {
-                    apply(e);
-                  }}
-                >
-                  Add
-                </button>
-                <button
-                  className="btn btn-primary btn-sm mx-2"
-                  onClick={(e) => {
-                    gotoPost(e);
-                  }}
-                >
-                  See details
-                </button>
-                {errDisplay && <p>{errDisplay}</p>}
-              </div>
-            )}
-            {applied && (
-              <div>
-                <label>Added to starred</label>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={(e) => {
-                    acceptadded(e);
-                  }}
-                >
-                  Ok
-                </button>
-              </div>
-            )}
-          </div>
+        <div className='flex-end'></div>
+
+        <div className='btn-group'>
+          {!applied && (
+            <div>
+              <button
+                className='btn btn-primary btn-sm mx-2'
+                onClick={(e) => {
+                  apply_start(e);
+                }}
+              >
+                Add to Star
+              </button>
+              <button
+                className='btn btn-primary btn-sm mx-2'
+                onClick={(e) => {
+                  gotoPost(e);
+                }}
+              >
+                See details
+              </button>
+            </div>
+          )}
+          {applied && (
+            <div>
+              <label>Added to starred</label>
+
+              <button
+                className='btn btn-primary btn-sm mx-2'
+                onClick={(e) => {
+                  gotoPost(e);
+                }}
+              >
+                See details
+              </button>
+            </div>
+          )}
         </div>
       </div>
-   
+    </div>
   );
 };
 export default PostListDisplay;

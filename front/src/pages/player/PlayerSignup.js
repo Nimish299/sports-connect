@@ -16,13 +16,13 @@ const PlayerSignup = () => {
   const [errDisplay, seterrDisplay] = useState('');
   const [name, setName] = useState('');
   const [cpassword, setCpassword] = useState('');
-
+  const [mobileNumber, setmobileNumber] = useState('');
   const navigate = useNavigate();
 
   const LoginFormSubmit = async (e) => {
     if (cpassword == password) {
       e.preventDefault();
-      const user = { name, emailID, password };
+      const user = { name, emailID, password, mobileNumber };
       const response = await fetch(`/api/player/signup`, {
         method: 'POST',
         body: JSON.stringify(user),
@@ -71,6 +71,19 @@ const PlayerSignup = () => {
           placeholder='Enter email'
         />
         <FormHelperText>We'll never share your email.</FormHelperText>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Mobile Number</FormLabel>
+        <Input
+          type='tel' // Set type to 'tel' for mobile numbers
+          className='form-control'
+          id='mobileNumber'
+          aria-describedby='mobileNumberHelp'
+          value={mobileNumber}
+          onChange={(e) => setmobileNumber(e.target.value)}
+          placeholder='Enter mobile number'
+        />
+        <FormHelperText>We'll never share your mobile number.</FormHelperText>
       </FormControl>
       <FormControl>
         <FormLabel>Password</FormLabel>

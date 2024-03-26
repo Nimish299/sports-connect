@@ -15,6 +15,11 @@ const playerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    mobileNumber: {
+      type: String,
+      required: true,
+    },
+
     applied: [
       {
         name: {
@@ -24,7 +29,7 @@ const playerSchema = new mongoose.Schema(
     ],
     starred: [
       {
-        name: {
+        post_id: {
           type: String,
         },
       },
