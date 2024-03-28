@@ -226,7 +226,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
               <div className='request_post_post-item'>
                 <h3>Request {index + 1}</h3>
                 <p>Message: {req.message}</p>
-                <p>
+                <p className='request_post_player-status'>
                   Status:{' '}
                   <span style={{ color: getStatusColor(req.status) }}>
                     {req.status}
