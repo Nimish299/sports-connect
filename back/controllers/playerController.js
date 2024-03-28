@@ -98,13 +98,13 @@ const profile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     let player = await playerModel.findOne({ _id: req.playerid });
-
+    console.log(player);
     if (!player) {
       return res.status(404).json({ error: 'Player not found' });
     }
 
     const { emailID, password, ...updatedData } = req.body;
-
+    console.log(updatedData);
     player.set(updatedData);
 
     player = await player.save();

@@ -100,17 +100,20 @@ const PlayerProfile = () => {
             </FormControl>
             <Divider />
             {profileData.gaming_statistics ? (
-              Object.entries(profileData.gaming_statistics).map(
-                ([game, level]) => (
+              <>
+                <Heading as='h2' size='md'>
+                  Gaming Statistics
+                </Heading>
+                {profileData.gaming_statistics.map(({ sport, skill }) => (
                   <div
-                    key={game}
+                    key={sport}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       marginBottom: '8px',
                     }}
                   >
-                    <Text>{game}</Text>
+                    <Text>{sport}</Text>
                     <Box
                       ml={2}
                       minWidth='100px'
@@ -119,14 +122,15 @@ const PlayerProfile = () => {
                       p={1}
                       textAlign='center'
                     >
-                      <Text>{level}</Text>
+                      <Text>{skill}</Text>
                     </Box>
                   </div>
-                )
-              )
+                ))}
+              </>
             ) : (
               <Text>No gaming statistics available</Text>
             )}
+
             <Divider />
             <Heading as='h2' size='md'>
               Communication Preferences
