@@ -65,29 +65,31 @@ const PlayerCoach = () => {
         <button onClick={redirecttomyposts}>See All Your Posts</button>
       </div>
 
-      <div class='filter-container'>
-        {!filterinUse && (
-          <div>
-            <button onClick={filterPlayerPosts}>Filter Based on Sport</button>
-            <input
-              type='text'
-              value={sport}
-              onChange={(e) => {
-                setSport(e.target.value);
-              }}
-            />
-          </div>
-        )}
-
-        {filterinUse && (
-          <div class='filtered-category'>
-            <h3>Filtered category is: {sport}</h3>
-            <button onClick={removeFilter}>Remove Filter</button>
-          </div>
-        )}
+      <div className='player_player_container'>
+        <h2 className='player_player_heading'>
+          These Are the Available PlayerPosts
+        </h2>
+        <div className='player_player_filterOption player_player_filter-container'>
+          {!filterinUse && (
+            <div>
+              <button onClick={filterPlayerPosts}>Filter Based on Sport</button>
+              <input
+                type='text'
+                value={sport}
+                onChange={(e) => {
+                  setSport(e.target.value);
+                }}
+              />
+            </div>
+          )}
+          {filterinUse && (
+            <div className='player_player_filtered-category'>
+              <h3>Filtered category is: {sport}</h3>
+              <button onClick={removeFilter}>Remove Filter</button>
+            </div>
+          )}
+        </div>
       </div>
-
-      <h2>These Are the Available PlayerPosts</h2>
 
       <div class='post-list'>
         {playerPosts &&

@@ -47,17 +47,19 @@ const StarredPosts = () => {
 
   return (
     <div>
-      <button onClick={gotoplayerplayer}>GO back</button>
-      <h2>Your Starred Posts</h2>
-      {starredPostIds.length > 0 ? (
-        <div>
-          {starredPostIds.map((post) => (
-            <StarredListDisplay key={post._id} playerPost={post} />
-          ))}
-        </div>
-      ) : (
-        <h4>No starred posts found.</h4>
-      )}
+      <div className='star-star-container'>
+        <button onClick={gotoplayerplayer}>GO back</button>
+        <h2>Your Starred Posts</h2>
+        {starredPostIds.length > 0 ? (
+          <div>
+            {starredPostIds.map((post) => (
+              <StarredListDisplay key={post._id} playerPost={post} />
+            ))}
+          </div>
+        ) : (
+          <h4>No starred posts found.</h4>
+        )}
+      </div>
     </div>
   );
 };

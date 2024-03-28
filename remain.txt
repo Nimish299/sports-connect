@@ -1,0 +1,5 @@
+update profile
+use effect when unstar
+use effect when see req and acc or reject
+
+acc or reject 

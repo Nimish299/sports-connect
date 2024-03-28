@@ -136,7 +136,7 @@ const requestonpost = async (req, res) => {
     const { message } = req.body;
 
     const postId = req.params._id;
-
+    const playerId = req.playerid;
     // Find the player post
     const post = await playerPostModel.findById(postId);
 
