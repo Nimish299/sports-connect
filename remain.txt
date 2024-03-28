@@ -2,4 +2,12 @@ update profile
 use effect when unstar
 use effect when see req and acc or reject
 
-acc or reject 
+css of home page
+
+
+navbar 
+Home icon link to login and not login
+profile and search on navbar
+
+
+coaches
