@@ -68,6 +68,7 @@ const EditProfile = () => {
     updatedFormData.splice(index, 1);
     setFormData({ ...formData, gaming_statistics: updatedFormData });
   };
+
   // Handle changes in form fields
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -90,7 +91,6 @@ const EditProfile = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -108,7 +108,8 @@ const EditProfile = () => {
         throw new Error('Failed to update profile');
       }
 
-      // Redirect or perform any other action upon successful update
+      // Redirect to player profile page
+      window.location.href = '/player/player-profile'; // Or use React Router for navigation
     } catch (error) {
       setError(error.message);
     } finally {
@@ -213,6 +214,7 @@ const EditProfile = () => {
                 name='social_interactions.bio'
                 value={formData.social_interactions?.bio || ''}
                 onChange={handleChange}
+                type='text'
               />
             </FormControl>
             <FormControl>
@@ -266,6 +268,7 @@ const EditProfile = () => {
 
             <Button type='submit' colorScheme='blue'>
               Submit
+              {/* <a href='/player/player-profile'>Submit</a> */}
             </Button>
           </form>
         )}
