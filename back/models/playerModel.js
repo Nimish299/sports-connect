@@ -38,11 +38,21 @@ const playerSchema = new mongoose.Schema(
       type: String,
     },
 
-    gaming_statistics: {
-      type: Map,
-      of: String,
-    },
-
+    gaming_statistics: [
+      {
+        sport: {
+          type: String,
+          // required: true,
+          // enum: ['Football', 'Basketball', 'Tennis', 'Cricket', 'Other'],
+        },
+        skill: {
+          type: String,
+          // required: true,
+          enum: ['Beginner', 'Intermediate', 'Advanced'],
+          default: 'Intermediate',
+        },
+      },
+    ],
     communication_preferences: {
       preferred_language: {
         type: String,
