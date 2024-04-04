@@ -5,6 +5,17 @@ import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [loginflag, setloginflag] = useState(false);
+  const logoutUser = async () => {
+    console.log('logged out');
+    await fetch('/api/player/logout', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+    console.log('logged out');
+    // return navigate('/');
+  };
   const Checklogin = async () => {
     try {
       const response = await fetch('/api/player/check', {
@@ -80,6 +91,9 @@ const Navbar = () => {
               </button>
               <button className='btn btn-outline-success'>
                 <a href='/player/player-profile'>Profile</a>
+              </button>
+              <button className='btn btn-outline-danger' onClick={logoutUser}>
+                sign-out
               </button>
             </form>
           )}
