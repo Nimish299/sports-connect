@@ -79,23 +79,25 @@ const Navbar = () => {
             </li>
           </ul>
           {loginflag && (
-            <form className='d-flex' role='search'>
-              <input
-                className='form-control me-2'
-                type='search'
-                placeholder='Search'
-                aria-label='Search'
-              />
-              <button className='btn btn-outline-success' type='submit'>
-                Search
-              </button>
+            <div className='d-flex'>
+              <form className='d-flex' role='search'>
+                <input
+                  className='form-control me-2'
+                  type='search'
+                  placeholder='Search'
+                  aria-label='Search'
+                />
+                <button className='btn btn-outline-success' type='submit'>
+                  Search
+                </button>
+              </form>
               <button className='btn btn-outline-success'>
                 <a href='/player/player-profile'>Profile</a>
               </button>
               <button className='btn btn-outline-danger' onClick={logoutUser}>
-                sign-out
+                <a href='/'>Sign-out</a>
               </button>
-            </form>
+            </div>
           )}
         </div>
       </div>
