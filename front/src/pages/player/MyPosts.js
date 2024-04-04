@@ -128,89 +128,102 @@ const MyPosts = () => {
         </div>
 
         {showForm && ( // Render the form only if showForm is true
-          <div>
-            <h2 style={{ textAlign: 'center' }}>Add Player Post</h2>
-            <form
-              style={{ maxWidth: '500px', margin: '0 auto' }}
-              onSubmit={addPlayerPost}
-            >
-              <div className='form-group'>
-                <label>Title</label>
-                <input
-                  type='text'
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className='form-control'
-                  placeholder='Enter Title'
-                />
-              </div>
+          <div
+            className='card mx-2 my-2'
+            style={{
+              width: '18rem',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              marginBottom: '20px', // Added margin-bottom
+            }}
+          >
+            <div className='card-body'>
+              <h2 style={{ textAlign: 'center' }}>Add Player Post</h2>
+              <form
+                style={{ maxWidth: '500px', margin: '0 auto' }}
+                onSubmit={addPlayerPost}
+              >
+                <div className='form-group'>
+                  <label>Title</label>
+                  <input
+                    type='text'
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className='form-control'
+                    placeholder='Enter Title'
+                  />
+                </div>
 
-              <div className='form-group'>
-                <label>Description</label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className='form-control'
-                  rows='3'
-                  placeholder='Enter Description'
-                ></textarea>
-              </div>
-              <div className='form-group'>
-                <label>Sport</label>
-                <input
-                  type='text'
-                  value={sport}
-                  onChange={(e) => setSport(e.target.value)}
-                  className='form-control'
-                  placeholder='Enter Sport'
-                />
-              </div>
-              <div className='form-group'>
-                <label htmlFor='skill'>Skill</label>
-                <select
-                  id='skill'
-                  value={skill}
-                  onChange={(e) => setSkill(e.target.value)}
-                  className='form-control'
-                  required // Add the required attribute to ensure HTML5 form validation
-                >
-                  <option value=''>Select Skill</option>
-                  <option value='Beginner'>Beginner</option>
-                  <option value='Intermediate'>Intermediate</option>
-                  <option value='Advanced'>Advanced</option>
-                </select>
-              </div>
-              <div className='form-group'>
-                <label>Patner Require</label>
-                <input
-                  type='number'
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  className='form-control'
-                  placeholder='Enter Number of patner require'
-                />
-              </div>
-              <div className='form-group'>
-                <label>Court:</label>
-                <input
-                  type='text'
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className='form-control'
-                  placeholder='Enter Location'
-                />
-              </div>
-              <button type='submit' className='btn btn-primary'>
-                Add
-              </button>
-            </form>
+                <div className='form-group'>
+                  <label>Description</label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className='form-control'
+                    rows='3'
+                    placeholder='Enter Description'
+                  ></textarea>
+                </div>
+                <div className='form-group'>
+                  <label>Sport</label>
+                  <input
+                    type='text'
+                    value={sport}
+                    onChange={(e) => setSport(e.target.value)}
+                    className='form-control'
+                    placeholder='Enter Sport'
+                  />
+                </div>
+                <div className='form-group'>
+                  <label htmlFor='skill'>Skill</label>
+                  <select
+                    id='skill'
+                    value={skill}
+                    onChange={(e) => setSkill(e.target.value)}
+                    className='form-control'
+                    required // Add the required attribute to ensure HTML5 form validation
+                  >
+                    <option value=''>Select Skill</option>
+                    <option value='Beginner'>Beginner</option>
+                    <option value='Intermediate'>Intermediate</option>
+                    <option value='Advanced'>Advanced</option>
+                  </select>
+                </div>
+                <div className='form-group'>
+                  <label>Patner Require</label>
+                  <input
+                    type='number'
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    className='form-control'
+                    placeholder='Enter Number of patner require'
+                  />
+                </div>
+                <div className='form-group'>
+                  <label>Court:</label>
+                  <input
+                    type='text'
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className='form-control'
+                    placeholder='Enter Location'
+                  />
+                </div>
+                <button type='submit' className='btn btn-primary'>
+                  Add
+                </button>
+              </form>
 
-            {errDisplay && <p>{errDisplay}</p>}
+              {errDisplay && <p>{errDisplay}</p>}
+            </div>
           </div>
         )}
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <h1>Your Player Posts</h1>
-        </div>
+
+        <h2 className='player_player_heading ' style={{ textAlign: 'center' }}>
+          Posts
+        </h2>
+
         <div className='my_post-grid-container'>
           <div className='my_post-grid-container'>
             {playerPosts &&

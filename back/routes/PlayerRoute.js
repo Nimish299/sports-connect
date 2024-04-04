@@ -16,6 +16,7 @@ const {
   starred,
   removefromstarred,
   fetchPlayerInfo,
+  check,
 } = require('../controllers/playerController');
 
 router.post('/signup', signup);
@@ -33,10 +34,11 @@ router.use(
     '/removefromstarred',
     '/updateProfile',
     '/fetchPlayerInfo',
+    '/check',
   ],
   playermiddle
 );
-
+router.get('/check', check);
 router.get('/profile', profile);
 router.get('/profile/info', fetchPlayerInfo);
 router.put('/updateProfile', updateProfile);

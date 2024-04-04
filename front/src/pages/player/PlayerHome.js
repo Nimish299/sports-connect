@@ -1,29 +1,29 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const PlayerHome = () => {
   const navigate = useNavigate();
   const logoutUser = async () => {
-    console.log("logged out");
-    await fetch("/api/player/logout", {
-      method: "GET",
+    console.log('logged out');
+    await fetch('/api/player/logout', {
+      method: 'GET',
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
-    console.log("logged out");
-    return navigate("/");
+    console.log('logged out');
+    return navigate('/');
   };
 
   const gotoPlayerPlayer = () => {
-    return navigate("/player/playerplayer");
+    return navigate('/player/playerplayer');
   };
 
   const gotoPlayerCoach = () => {
-    return navigate("/player/playerCoach");
+    return navigate('/player/playerCoach');
   };
 
   return (
-    <div style={{ backgroundColor: "white" }}>
+    <div style={{ backgroundColor: 'white' }}>
       <div>
         <button onClick={logoutUser}>sign out</button>
       </div>
