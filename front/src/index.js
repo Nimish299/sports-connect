@@ -1,3 +1,4 @@
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
@@ -6,8 +7,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import FlagProvider from "./context/FlagProvider";
 
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+
   <FlagProvider> 
   <ChakraProvider>
     
@@ -18,4 +22,6 @@ root.render(
   </ChakraProvider>
   </FlagProvider>
  
+
+
 );

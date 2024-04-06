@@ -20,7 +20,9 @@ const PlayerHome = () => {
   const gotoPlayerPlayer = () => {
     return navigate('/player/playerplayer');
   };
+
   const {loginflag,setLoginflag} = FlagState();
+
 
   const gotoPlayerCoach = () => {
     return navigate('/player/playerCoach');

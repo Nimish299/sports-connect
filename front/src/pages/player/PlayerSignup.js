@@ -19,6 +19,7 @@ const PlayerSignup = () => {
   const [cpassword, setCpassword] = useState('');
   const [mobileNumber, setmobileNumber] = useState('');
   const navigate = useNavigate();
+
   const {loginflag,setLoginflag} = FlagState();
 
   function validateEmail(email) {
@@ -33,7 +34,7 @@ const PlayerSignup = () => {
     const phoneRegex = /^\d{10}$/;
     return phoneRegex.test(phoneNumber);
   }
-  
+
 
 
   const LoginFormSubmit = async (e) => {
@@ -50,8 +51,7 @@ const PlayerSignup = () => {
       return alert("mobile number should have 10 digits");
     }
     
-    
-    
+
     if (cpassword == password) {
       e.preventDefault();
       const user = { name, emailID, password, mobileNumber };
@@ -71,7 +71,9 @@ const PlayerSignup = () => {
       } else {
         console.log(json.error);
         seterrDisplay(json.error);
+
         alert(errDisplay)
+
       }
     } else {
       return alert('Passwords do not match');
@@ -158,7 +160,7 @@ const PlayerSignup = () => {
       <Link class='btn btn-primary' to='/' role='button'>
         Back
       </Link>
-      
+
     </VStack>
   );
 };

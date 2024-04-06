@@ -4,11 +4,11 @@ import { Link, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { FlagState } from '../context/FlagProvider';
-  
+
 
 const Navbar = () => {
   const {loginflag, setLoginflag} = FlagState();
-  
+
   const logoutUser = async () => {
     console.log('logged out');
     await fetch('/api/player/logout', {
@@ -47,6 +47,7 @@ const Navbar = () => {
 
   useEffect(() => {
     Checklogin(); // Call the function
+
     
   }, [loginflag]); 
   // Run whenever loginflag changes

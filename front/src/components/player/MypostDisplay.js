@@ -5,7 +5,8 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   const [flag, setflag] = useState(false);
   const [acceptflag, setacceptflag] = useState(false);
   const [postAccept, setpostAccept] = useState([]);
-
+  // const [1postAccept, 1setpostAccept] = useState([]);
+  const [sflag, setsflag] = useState(false);
   //delete post
   const deletePlayerPost = async (e) => {
     e.preventDefault();

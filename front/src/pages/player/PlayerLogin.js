@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { FlagState } from '../../context/FlagProvider';
 
 
-
 import {
   VStack,
   FormControl,
@@ -25,9 +24,6 @@ const PlayerLogin = () => {
 
   
   console.log(loginflag);
-
-  
- 
 
   const LoginFormSubmit = async (e) => {
     
