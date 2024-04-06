@@ -5,6 +5,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   const [flag, setflag] = useState(false);
   const [acceptflag, setacceptflag] = useState(false);
   const [postAccept, setpostAccept] = useState([]);
+  const [playerreject, setplayerreject] = useState([]);
   // const [1postAccept, 1setpostAccept] = useState([]);
   const [sflag, setsflag] = useState(false);
   //delete post
@@ -104,8 +105,10 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
       }
 
       const json = await response.json();
+
       setpostAccept(json);
       setacceptflag(true);
+
       console.log(`postAccept`);
       console.log(postAccept);
     } catch (error) {
@@ -324,7 +327,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
                   </>
                 )}
 
-                {getStatusColor(req.status) === 'green' && (
+                {/* {getStatusColor(req.status) === 'green' && (
                   <>
                     <p>
                       {req.status + 'ed'}:{' '}
@@ -339,7 +342,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
                       {formatTimestamp(rejectRequest.timestamp)}
                     </p>
                   </>
-                )}
+                )} */}
               </div>
             </div>
           ))}
