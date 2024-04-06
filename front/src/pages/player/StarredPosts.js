@@ -43,7 +43,7 @@ const StarredPosts = () => {
     };
 
     getStarredPosts();
-  }, [starredPostIds]);
+  }, []);
 
   return (
     <div>
