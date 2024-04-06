@@ -38,7 +38,7 @@ const PostListDisplay = ({ playerPost, navigate }) => {
   // console.log(playerPost._id);
   const gotoPost = (e) => {
     e.preventDefault();
-    console.log(playerPost._id);
+    //console.log(playerPost._id);
     return navigate(`/playerpost/${playerPost._id}`);
   };
   const name = playerPost.playersInfo?.[0]?.name || 'Name not available';
@@ -67,6 +67,31 @@ const PostListDisplay = ({ playerPost, navigate }) => {
       return `${seconds} ${seconds === 1 ? 'second' : 'seconds'} ago`;
     }
   };
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const response = await fetch(
+          `/api/player/tellifstarred/${playerPost._id}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        const data = await response.json();
+        setApplied(data.status);
+        //console.log('hi');
+        // console.log(applied);
+        //setflag(true); // Update status state
+      } catch (error) {
+        console.error('Error:', error.message);
+        //setErrorMessage(error.message); // Set the error message received from the backend
+      }
+    };
+    run();
+  });
 
   return (
     <div className='card mx-3 my-3' style={{ width: '18rem' }}>
@@ -96,6 +121,22 @@ const PostListDisplay = ({ playerPost, navigate }) => {
         <div className='flex-end'></div>
 
         <div className='btn-group'>
+          {applied ? (
+            <div>
+              <label>Added to starred</label>
+
+              <button
+                className='btn btn-primary btn-sm mx-2'
+                onClick={(e) => {
+                  gotoPost(e);
+                }}
+              >
+                See details
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
           {!applied && (
             <div>
               <button
@@ -106,20 +147,6 @@ const PostListDisplay = ({ playerPost, navigate }) => {
               >
                 Add to Star
               </button>
-              <button
-                className='btn btn-primary btn-sm mx-2'
-                onClick={(e) => {
-                  gotoPost(e);
-                }}
-              >
-                See details
-              </button>
-            </div>
-          )}
-          {applied && (
-            <div>
-              <label>Added to starred</label>
-
               <button
                 className='btn btn-primary btn-sm mx-2'
                 onClick={(e) => {

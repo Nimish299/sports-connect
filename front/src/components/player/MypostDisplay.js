@@ -4,6 +4,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   const [postRequests, setpostRequests] = useState([]);
   const [flag, setflag] = useState(false);
   const [acceptflag, setacceptflag] = useState(false);
+  const [rejectflag, setrejectflag] = useState(false);
   const [postAccept, setpostAccept] = useState([]);
 
   //delete post
@@ -34,6 +35,34 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   //all req in a post
   const Getrequestonpost = async (e) => {
     e.preventDefault();
+
+    try {
+      console.log(`request`);
+      const response = await fetch(
+        `/api/playerpost/Getrequestonpost/${playerPost._id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const json = await response.json();
+      setpostRequests(json);
+      setflag(true);
+      console.log(postRequests);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+
+  const Getrequestonpost1 = async () => {
+    //e.preventDefault();
 
     try {
       console.log(`request`);
@@ -103,8 +132,9 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
       }
 
       const json = await response.json();
-      setpostAccept(json);
-      setacceptflag(true);
+      // setpostAccept(json);
+      // setacceptflag();
+      setrejectflag(true);
       console.log(`postAccept`);
       console.log(postAccept);
     } catch (error) {
@@ -140,10 +170,11 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
   const removerequest = () => {
     setflag(false);
   };
+
   useEffect(() => {
-    // Getrequestonpost();
     getStatusColor();
-  }, [postRequests]);
+    Getrequestonpost1();
+  }, [postRequests, acceptflag, rejectflag]);
   // Assuming playerPost.playerInfo is an object containing name and emailID
   // Ensure playerPost.playerInfo exists before destructure
   const name = playerPost.playersInfo?.[0]?.name || 'Name not available';
