@@ -9,6 +9,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
+import { FlagState } from '../../context/FlagProvider';
 
 const PlayerSignup = () => {
   const [emailID, setEmailID] = useState('');
@@ -18,8 +19,37 @@ const PlayerSignup = () => {
   const [cpassword, setCpassword] = useState('');
   const [mobileNumber, setmobileNumber] = useState('');
   const navigate = useNavigate();
+  const { loginflag, setLoginflag } = FlagState();
+
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  function isValidPassword(password) {
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{6,}$/;
+    return passwordRegex.test(password);
+  }
+  function isValidPhoneNumber(phoneNumber) {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phoneNumber);
+  }
 
   const LoginFormSubmit = async (e) => {
+    if (name.length == 0) {
+      return alert('name should have atleast one character');
+    }
+    if (!validateEmail(emailID)) {
+      return alert('please enter a valid email');
+    }
+    if (!isValidPassword(password)) {
+      return alert(
+        'Password should have at least one digit, one special character, one letter, and a minimum length of 6 characters'
+      );
+    }
+    if (!isValidPhoneNumber(mobileNumber)) {
+      return alert('mobile number should have 10 digits');
+    }
+
     if (cpassword == password) {
       e.preventDefault();
       const user = { name, emailID, password, mobileNumber };
@@ -34,14 +64,15 @@ const PlayerSignup = () => {
 
       if (response.ok) {
         console.log(json);
-
+        setLoginflag(true);
         return navigate('/player/home');
       } else {
         console.log(json.error);
         seterrDisplay(json.error);
+        alert(errDisplay);
       }
     } else {
-      alert('Passwords do not match');
+      return alert('Passwords do not match');
     }
   };
 
@@ -81,7 +112,7 @@ const PlayerSignup = () => {
           aria-describedby='mobileNumberHelp'
           value={mobileNumber}
           onChange={(e) => setmobileNumber(e.target.value)}
-          placeholder='Enter mobile number'
+          placeholder='Enter mobile number - 10 digits'
         />
         <FormHelperText>We'll never share your mobile number.</FormHelperText>
       </FormControl>
@@ -95,7 +126,7 @@ const PlayerSignup = () => {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
-          placeholder='Enter password'
+          placeholder='At least 5 digits or characters'
         />
       </FormControl>
       <FormControl>
@@ -125,7 +156,6 @@ const PlayerSignup = () => {
       <Link class='btn btn-primary' to='/' role='button'>
         Back
       </Link>
-      <div>{errDisplay && <p>{errDisplay}</p>}</div>
     </VStack>
   );
 };
