@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const PostListDisplay = ({ playerPost, navigate }) => {
   console.log(playerPost);
@@ -77,15 +77,15 @@ const PostListDisplay = ({ playerPost, navigate }) => {
         >
           {playerPost.title}
         </h5>
-        <h6
+        {/* <h6
           className='card-subtitle mb-2 text-muted'
           style={{ fontSize: '0.9rem' }}
         >
           Description: {playerPost.description}
-        </h6>
+        </h6> */}
         <p className='card-text mb-1'>Name: {name}</p>
         <p className='card-text mb-1'>Sports: {playerPost.sport}</p>
-        <p className='card-text mb-1'>Skill: {playerPost.skill}</p>
+        {/* <p className='card-text mb-1'>Skill: {playerPost.skill}</p> */}
         <p className='card-text mb-1'>
           Number of Openings: {playerPost.quantity}
         </p>

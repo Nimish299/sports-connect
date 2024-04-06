@@ -1,5 +1,5 @@
-import { NavLink, useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
+import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import {
   VStack,
@@ -9,29 +9,29 @@ import {
   Input,
   Button,
   useToast,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 const PlayerLogin = () => {
-  const [emailID, setEmailID] = useState("");
-  const [password, setPassword] = useState("");
-  const [errDisplay, seterrDisplay] = useState("");
+  const [emailID, setEmailID] = useState('');
+  const [password, setPassword] = useState('');
+  const [errDisplay, seterrDisplay] = useState('');
   const navigate = useNavigate();
 
   const LoginFormSubmit = async (e) => {
     e.preventDefault();
     const user = { emailID, password };
     const response = await fetch(`/api/player/login`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(user),
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
     const json = await response.json();
 
     if (response.ok) {
       console.log(json);
-      return navigate("/player/home");
+      return navigate('/player/home');
     } else {
       console.log(json.error);
       seterrDisplay(json.error);
@@ -46,11 +46,11 @@ const PlayerLogin = () => {
           <Input
             value={emailID}
             onChange={(e) => setEmailID(e.target.value)}
-            type="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
+            type='email'
+            className='form-control'
+            id='exampleInputEmail1'
+            aria-describedby='emailHelp'
+            placeholder='Enter email'
           />
           <FormHelperText>We'll never share your email.</FormHelperText>
         </FormControl>
@@ -61,37 +61,37 @@ const PlayerLogin = () => {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
-            type="password"
-            className="form-control"
-            id="exampleInputPassword1"
-            name="password"
-            placeholder="Enter password"
+            type='password'
+            className='form-control'
+            id='exampleInputPassword1'
+            name='password'
+            placeholder='Enter password'
           />
         </FormControl>
 
         <Button
-          width="100%"
-          colorScheme="blue"
+          width='100%'
+          colorScheme='blue'
           style={{ marginTop: 15 }}
-          type="submit"
+          type='submit'
           onClick={LoginFormSubmit}
         >
           Login
         </Button>
         <Button
-          width="100%"
-          colorScheme="red"
+          width='100%'
+          colorScheme='red'
           style={{ marginTop: 15 }}
           onClick={() => {
-            setEmailID("123player@gmail.com");
-            setPassword("12345");
+            setEmailID('123player@gmail.com');
+            setPassword('12345');
           }}
         >
           Get Guest user Credentials
         </Button>
         <div>{errDisplay && <p>{errDisplay}</p>}</div>
 
-        <Link class="btn btn-primary" to="/" role="button">
+        <Link class='btn btn-primary' to='/' role='button'>
           Back
         </Link>
       </VStack>

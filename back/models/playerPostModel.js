@@ -101,6 +101,19 @@ const playerPostSchema = new mongoose.Schema({
       },
     },
   ],
+  Rejected: [
+    {
+      playerId: {
+        type: String,
+        required: true,
+      },
+
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   playersInfo: [
     {
       name: {

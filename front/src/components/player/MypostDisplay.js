@@ -86,7 +86,31 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
       console.error('Error:', error.message);
     }
   };
+  const rejectRequest = async (req) => {
+    try {
+      console.log(`Rejected`);
+      console.log(req);
+      const response = await fetch(`/api/playerpost/POSTREJECT`, {
+        method: 'POST',
+        body: JSON.stringify(req),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const json = await response.json();
+      setpostAccept(json);
+      setacceptflag(true);
+      console.log(`postAccept`);
+      console.log(postAccept);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
   //time formating
   const formatTimestamp = (timestamp) => {
     const currentTime = new Date();
@@ -290,7 +314,7 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
                     </button>
                     <button
                       className='btn btn-danger'
-                      // onClick={() => acceptRequest(req)}
+                      onClick={() => rejectRequest(req)}
                       style={{ fontSize: '0.9rem', padding: '0.3rem 0.75rem' }}
                     >
                       Reject
@@ -304,6 +328,14 @@ const MypostDisplay = ({ playerPost, setPlayerPosts, playerPosts }) => {
                     <p>
                       {req.status + 'ed'}:{' '}
                       {formatTimestamp(postAccept.timestamp)}
+                    </p>
+                  </>
+                )}
+                {getStatusColor(req.status) === 'red' && (
+                  <>
+                    <p>
+                      {req.status + 'ed'}:{' '}
+                      {formatTimestamp(rejectRequest.timestamp)}
                     </p>
                   </>
                 )}

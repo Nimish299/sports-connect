@@ -10,7 +10,25 @@ createToken = (id) => {
     expiresIn: maxAge,
   });
 };
+const check = async (req, res) => {
+  try {
+    const playerId1 = req.playerid;
+    const player = await playerModel.findById(playerId1);
 
+    if (!player) {
+      console.log(player);
+      // Player not found
+      res.status(200).json({ loggedIn: false }); // Send response with loggedIn false
+    } else {
+      // Player found
+      res.status(200).json({ loggedIn: true }); // Send response with loggedIn true
+    }
+  } catch (error) {
+    console.error('Error checking player:', error);
+    // Handle error
+    res.status(500).json({ loggedIn: false }); // Send response with loggedIn false in case of error
+  }
+};
 const signup = async (req, res) => {
   const { name, emailID, password, mobileNumber } = req.body;
   const player = await playerModel.findOne({ emailID });
@@ -275,4 +293,5 @@ module.exports = {
   starred,
   removefromstarred,
   fetchPlayerInfo,
+  check,
 };

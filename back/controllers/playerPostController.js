@@ -287,9 +287,6 @@ const POSTAccept = async (req, res) => {
           timestamp: new Date(),
         });
         request.status = 'accepted';
-      } else {
-        // If the player is not the one who posted the request, change status to 'rejected'
-        request.status = 'rejected';
       }
     });
     // Save the updated post
@@ -308,6 +305,51 @@ const POSTAccept = async (req, res) => {
   }
 };
 
+const POSTREJECT = async (req, res) => {
+  try {
+    // console.log(playerId); //player who requested
+    // console.log(playerId1); //player who posted and willl accept
+    const { postId, playerId } = req.body;
+    const playerId1 = req.playerid;
+    // Find the post by postId
+    const post = await playerPostModel.findById(postId);
+    // Check if the post exists
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    // Check if the player who posted the request matches the player who posted the post
+    if (post.createdBy !== playerId1) {
+      return res
+        .status(403)
+        .json({ error: 'You are not authorized to accept this request' });
+    }
+    // Iterate through requests array
+    post.requests.forEach((request) => {
+      if (request.playerId === playerId) {
+        // If the player is the one who posted the request, add it to accepted array and change status to 'accepted'
+        request.timestamp = new Date();
+        post.Rejected.push({
+          playerId: request.playerId,
+          timestamp: new Date(),
+        });
+        request.status = 'rejected';
+      }
+    });
+    // Save the updated post
+    await post.save();
+    const Accpost = post.accepted.map((accepted) => ({
+      postId: postId,
+
+      timestamp: accepted.timestamp,
+    }));
+    console.log(`acc`);
+    console.log(Accpost);
+    res.status(201).json(Accpost);
+  } catch (error) {
+    console.error('Error in accepting request:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 module.exports = {
   createPlayerPost,
   Getrequestonpost,
@@ -320,4 +362,5 @@ module.exports = {
   Statusonpost,
   POSTAccept,
   getpostsbyids,
+  POSTREJECT,
 };
