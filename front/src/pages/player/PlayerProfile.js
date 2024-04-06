@@ -12,8 +12,7 @@ import {
   Box,
   Flex,
 } from '@chakra-ui/react';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+
 const PlayerProfile = () => {
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -21,28 +20,6 @@ const PlayerProfile = () => {
   const navigate = useNavigate();
   const renderInterests = (interests) => {
     return <Text>Interests: {interests.join(', ')}</Text>;
-  };
-  const renderSocialMediaLink = (platform, link) => {
-    let iconClass;
-    switch (platform) {
-      case 'Facebook':
-        iconClass = 'fa-facebook';
-        break;
-      case 'Twitter':
-        iconClass = 'fa-twitter';
-        break;
-      case 'Instagram':
-        iconClass = 'fa-instagram';
-        break;
-      default:
-        iconClass = '';
-    }
-
-    return (
-      <div key={platform}>
-        <a href={link} className={`fa ${iconClass}`} />
-      </div>
-    );
   };
 
   useEffect(() => {
@@ -149,11 +126,16 @@ const PlayerProfile = () => {
               <>
                 {Object.entries(
                   profileData.social_interactions.social_media_links
-                ).map(([platform, link]) =>
-                  renderSocialMediaLink(platform, link)
-                )}
+                ).map(([platform, link]) => (
+                  <div key={platform}>
+                    <a href={link} target='_blank' rel='noopener noreferrer'>
+                      {platform}
+                    </a>
+                  </div>
+                ))}
               </>
             )}
+
             <Divider />
             <Divider />
             <Heading as='h2' size='md'>
