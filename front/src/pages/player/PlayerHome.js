@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Link, NavLink } from 'react-router-dom';
+import { FlagState } from '../../context/FlagProvider';
+
 const PlayerHome = () => {
   const navigate = useNavigate();
   const logoutUser = async () => {
@@ -10,6 +12,7 @@ const PlayerHome = () => {
         'Content-type': 'application/json',
       },
     });
+    setLoginflag(false);
     console.log('logged out');
     return navigate('/');
   };
@@ -17,6 +20,7 @@ const PlayerHome = () => {
   const gotoPlayerPlayer = () => {
     return navigate('/player/playerplayer');
   };
+  const {loginflag,setLoginflag} = FlagState();
 
   const gotoPlayerCoach = () => {
     return navigate('/player/playerCoach');

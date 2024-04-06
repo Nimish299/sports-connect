@@ -3,8 +3,12 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
+import { FlagState } from '../context/FlagProvider';
+  
+
 const Navbar = () => {
-  const [loginflag, setloginflag] = useState(false);
+  const {loginflag, setLoginflag} = FlagState();
+  
   const logoutUser = async () => {
     console.log('logged out');
     await fetch('/api/player/logout', {
@@ -28,22 +32,26 @@ const Navbar = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        setloginflag(data.loggedIn);
+        setLoginflag(data.loggedIn);
       } else {
         // Handle error response
         console.log('NO');
-        setloginflag(false); // Set loginflag to false if there's an error
+        setLoginflag(false); // Set loginflag to false if there's an error
       }
     } catch (error) {
       console.error('Error checking login:', error);
       // Handle fetch error
-      setloginflag(false); // Set loginflag to false in case of fetch error
+      setLoginflag(false); // Set loginflag to false in case of fetch error
     }
   };
 
   useEffect(() => {
     Checklogin(); // Call the function
-  }, [loginflag]); // Run whenever loginflag changes
+    
+  }, [loginflag]); 
+  // Run whenever loginflag changes
+
+  
 
   return (
     <nav className='navbar navbar-expand-lg bg-body-tertiary'>

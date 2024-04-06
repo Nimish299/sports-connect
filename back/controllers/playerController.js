@@ -49,7 +49,7 @@ const signup = async (req, res) => {
       return res.status(400).json({ error: err });
     }
   } else {
-    res.status(400).json({ error: 'already exists' });
+    res.status(400).json({ error: 'User already exists' });
   }
 };
 const fetchPlayerInfo = async (req, res) => {
@@ -280,38 +280,6 @@ const removefromstarred = async (req, res) => {
   }
 };
 
-const please_tell_me_if_it_is_starred = async (req, res) => {
-  try {
-    const playerId = req.playerid;
-    const postId = req.params._id;
-    let flag = 0;
-    const player = await playerModel.findOne({ _id: playerId });
-
-    // playerModel.find({ starred: { $in: [postId] } }, (err, docs) => {
-    //   if (err) {
-    //     console.error(err);
-    //   }
-    //   // If docs is not empty, it means the searchTerm was found in the array
-    //   else flag = docs.length > 0;
-    // });
-    // const updatedPlayer = await playerModel.findOne(
-    //   { _id: playerId },
-    //   {  starred: }, // Remove the specified post ID from the starred array
-    //   { new: true } // To return the updated document
-    // );
-    const req1 = player.starred.find((starred) => starred.post_id === postId);
-    console.log('this');
-
-    if (req1) flag = 1;
-    //console.log(flag);
-    // Send the status of the existing request
-    res.status(200).json({ status: flag });
-  } catch (error) {
-    console.error('Error in Request player post:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
 module.exports = {
   signup,
   login,
@@ -326,5 +294,4 @@ module.exports = {
   removefromstarred,
   fetchPlayerInfo,
   check,
-  please_tell_me_if_it_is_starred,
 };
