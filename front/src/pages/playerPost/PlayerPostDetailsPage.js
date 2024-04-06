@@ -86,6 +86,10 @@ const PlayerPostDetailsPage = () => {
   useEffect(() => {
     statusfun(_id);
     getDetails();
+  }, []);
+  useEffect(() => {
+    statusfun(_id);
+    getDetails();
   }, [status]);
 
   // Function to handle toggling form visibility
