@@ -53,7 +53,12 @@ const StarredPosts = () => {
         {starredPostIds.length > 0 ? (
           <div>
             {starredPostIds.map((post) => (
-              <StarredListDisplay key={post._id} playerPost={post} />
+              <StarredListDisplay
+                key={post._id}
+                playerPost={post}
+                playerPosts={starredPostIds}
+                setPlayerPosts={setStarredPostIds}
+              />
             ))}
           </div>
         ) : (

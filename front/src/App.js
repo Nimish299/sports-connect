@@ -1,4 +1,5 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { useState } from 'react';
 
 import Home from './pages/Home';
 import PlayerLogin from './pages/player/PlayerLogin';
@@ -22,6 +23,7 @@ import About from './pages/About';
 import PlayerProfile from './pages/player/PlayerProfile';
 import EditProfile from './pages/player/EditProfileform';
 function App() {
+  const [loginflag, setloginflag] = useState(false);
   return (
     <div>
       <Navbar />
