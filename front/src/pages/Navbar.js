@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react';
 
 import { FlagState } from '../context/FlagProvider';
 
+
 const Navbar = () => {
-  const { loginflag, setLoginflag } = FlagState();
+  const {loginflag, setLoginflag} = FlagState();
 
   const logoutUser = async () => {
     console.log('logged out');
@@ -46,8 +47,12 @@ const Navbar = () => {
 
   useEffect(() => {
     Checklogin(); // Call the function
-  }, [loginflag]);
+
+    
+  }, [loginflag]); 
   // Run whenever loginflag changes
+
+  
 
   return (
     <nav className='navbar navbar-expand-lg bg-body-tertiary'>
