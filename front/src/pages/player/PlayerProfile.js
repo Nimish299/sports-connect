@@ -65,6 +65,7 @@ const PlayerProfile = () => {
   }, []);
 
   return (
+    
     <VStack spacing={4} align='flex-start'>
       <div
         style={{
