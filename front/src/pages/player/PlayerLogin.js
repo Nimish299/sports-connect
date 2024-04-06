@@ -2,6 +2,7 @@ import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { FlagState } from '../../context/FlagProvider';
 
+
 import {
   VStack,
   FormControl,
@@ -18,11 +19,14 @@ const PlayerLogin = () => {
   const [errDisplay, seterrDisplay] = useState('');
   const navigate = useNavigate();
 
-  const { loginflag, setLoginflag } = FlagState();
+  const {loginflag,setLoginflag} = FlagState();
 
+
+  
   console.log(loginflag);
 
   const LoginFormSubmit = async (e) => {
+    
     e.preventDefault();
     const user = { emailID, password };
     const response = await fetch(`/api/player/login`, {
@@ -38,11 +42,14 @@ const PlayerLogin = () => {
       console.log(json);
       setLoginflag(true);
       return navigate('/player/home');
+      
     } else {
       console.log(json.error);
       seterrDisplay(json.error);
     }
   };
+
+ 
 
   return (
     <div>

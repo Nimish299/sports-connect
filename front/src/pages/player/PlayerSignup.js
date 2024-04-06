@@ -19,7 +19,8 @@ const PlayerSignup = () => {
   const [cpassword, setCpassword] = useState('');
   const [mobileNumber, setmobileNumber] = useState('');
   const navigate = useNavigate();
-  const { loginflag, setLoginflag } = FlagState();
+
+  const {loginflag,setLoginflag} = FlagState();
 
   function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -34,21 +35,22 @@ const PlayerSignup = () => {
     return phoneRegex.test(phoneNumber);
   }
 
+
+
   const LoginFormSubmit = async (e) => {
-    if (name.length == 0) {
-      return alert('name should have atleast one character');
+    if(name.length == 0) {
+      return alert("name should have atleast one character");
     }
-    if (!validateEmail(emailID)) {
-      return alert('please enter a valid email');
+    if(!validateEmail(emailID)) {
+      return alert("please enter a valid email");
     }
-    if (!isValidPassword(password)) {
-      return alert(
-        'Password should have at least one digit, one special character, one letter, and a minimum length of 6 characters'
-      );
+    if(!isValidPassword(password)) {
+      return alert("Password should have at least one digit, one special character, one letter, and a minimum length of 6 characters");
     }
-    if (!isValidPhoneNumber(mobileNumber)) {
-      return alert('mobile number should have 10 digits');
+    if(!isValidPhoneNumber(mobileNumber)) {
+      return alert("mobile number should have 10 digits");
     }
+    
 
     if (cpassword == password) {
       e.preventDefault();
@@ -69,7 +71,9 @@ const PlayerSignup = () => {
       } else {
         console.log(json.error);
         seterrDisplay(json.error);
-        alert(errDisplay);
+
+        alert(errDisplay)
+
       }
     } else {
       return alert('Passwords do not match');
@@ -156,6 +160,7 @@ const PlayerSignup = () => {
       <Link class='btn btn-primary' to='/' role='button'>
         Back
       </Link>
+
     </VStack>
   );
 };

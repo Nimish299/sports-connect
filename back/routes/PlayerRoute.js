@@ -17,7 +17,6 @@ const {
   removefromstarred,
   fetchPlayerInfo,
   check,
-  please_tell_me_if_it_is_starred,
 } = require('../controllers/playerController');
 
 router.post('/signup', signup);
@@ -36,7 +35,6 @@ router.use(
     '/updateProfile',
     '/fetchPlayerInfo',
     '/check',
-    '/tellifstarred',
   ],
   playermiddle
 );
@@ -51,6 +49,5 @@ router.delete('/leaveacad', leaveacad);
 router.post('/addtostarred', addtostarred);
 router.get('/starred', starred);
 router.delete('/removefromstarred', removefromstarred);
-router.get('/tellifstarred/:_id', please_tell_me_if_it_is_starred);
 
 module.exports = router;
