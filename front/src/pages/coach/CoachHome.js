@@ -1,23 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import AcademyDisplay from "../../components/coach/academyDisplay";
-import { useEffect, useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
+import AcademyDisplay from '../../components/coach/academyDisplay';
+import { useEffect, useState } from 'react';
 
 const CoachHome = () => {
   const navigate = useNavigate();
   const [academys, setAcademys] = useState([]);
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [quantity, setQuantity] = useState(0);
-  const [sport, setSport] = useState("");
-  const [errDisplay, seterrDisplay] = useState("");
+  const [sport, setSport] = useState('');
+  const [errDisplay, seterrDisplay] = useState('');
 
   useEffect(() => {
     const run = async () => {
-      const response = await fetch("/api/academy/allcoach", {
-        method: "GET",
+      const response = await fetch('/api/academy/allcoach', {
+        method: 'GET',
         headers: {
-          "Content-type": "application/json",
+          'Content-type': 'application/json',
         },
       });
       const json = await response.json();
@@ -34,34 +33,34 @@ const CoachHome = () => {
 
   const logoutCoach = async (e) => {
     e.preventDefault();
-    console.log("logged out");
-    await fetch("/api/coach/logout", {
-      method: "GET",
+    console.log('logged out');
+    await fetch('/api/coach/logout', {
+      method: 'GET',
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
-    console.log("logged out");
-    return navigate("/coach");
+    console.log('logged out');
+    return navigate('/coach');
   };
 
   const addacad = async (e) => {
     e.preventDefault();
     const academy = { name, quantity, sport };
     const response = await fetch(`/api/academy/create`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(academy),
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
     const json = await response.json();
     if (response.ok) {
       console.log(json);
-      setName("");
+      setName('');
       setQuantity(0);
-      setSport("");
-      seterrDisplay("");
+      setSport('');
+      seterrDisplay('');
       setAcademys((prev) => [...prev, academy]);
     } else {
       console.log(json.error);
@@ -70,7 +69,7 @@ const CoachHome = () => {
   };
 
   return (
-    <div>
+    <div className='container' style={{ background: 'grey' }}>
       <div>
         <button onClick={logoutCoach}>sign out</button>
       </div>
@@ -80,7 +79,7 @@ const CoachHome = () => {
           <div>
             <label>name </label>
             <input
-              type="text"
+              type='text'
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
@@ -90,7 +89,7 @@ const CoachHome = () => {
           <div>
             <label>quantity </label>
             <input
-              type="number"
+              type='number'
               value={quantity}
               onChange={(e) => {
                 setQuantity(e.target.value);
@@ -100,7 +99,7 @@ const CoachHome = () => {
           <div>
             <label>category </label>
             <input
-              type="text"
+              type='text'
               value={sport}
               onChange={(e) => {
                 setSport(e.target.value);
